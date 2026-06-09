@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <style>
+    .container {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+
+    .container h1 {
+      color: #285959;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .container p {
+      color: #555;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .btn-create {
+      display: inline-block;
+      background-color: #285959;
+      color: #FFFFFF;
+      padding: 12px 20px;
+      border-radius: 4px;
+      text-decoration: none;
+      margin-bottom: 20px;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-create:hover {
+      background-color: #A4C0B0;
+      color: #285959;
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: #FFFFFF;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .table thead {
+      background-color: #285959;
+      color: #FFFFFF;
+    }
+
+    .table thead th {
+      padding: 15px;
+      text-align: left;
+      font-weight: 600;
+    }
+
+    .table tbody tr {
+      border-bottom: 1px solid #CED7D7;
+    }
+
+    .table tbody tr:hover {
+      background-color: #F5F5F5;
+    }
+
+    .table tbody td {
+      padding: 15px;
+    }
+
+    .table .row-accent {
+      border-left: 4px solid #A4C0B0;
+    }
+
+    .actions a {
+      margin-right: 8px;
+      text-decoration: none;
+      font-size: 13px;
+      color: #285959;
+    }
+
+    .actions a:hover {
+      text-decoration: underline;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 30px;
+      color: #888;
+    }
+
+    .search-form {
+      margin-bottom: 20px;
+    }
+
+    .search-form input[type="text"] {
+      padding: 10px;
+      border: 1px solid #CED7D7;
+      border-radius: 4px;
+      width: 250px;
+    }
+
+    .search-form button {
+      padding: 10px 16px;
+      border: none;
+      background-color: #285959;
+      color: #FFFFFF;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  </style>
+
+  <div class="container" align="center">
+    <h1>Prestadores</h1>
+    <p>Lista de prestadores cadastrados.</p>
+
+    <a href="{% url 'new_pj' %}" class="btn-create">+ Novo Prestador</a>
+
+    <form method="get" class="search-form">
+      <input type="text" name="search" placeholder="Buscar por nome, matrícula ou empresa..." value="{{ request.GET.search }}">
+      <button type="submit">Buscar</button>
+    </form>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Matrícula</th>
+          <th>Nome do Funcionário</th>
+          <th>Nome da Empresa</th>
+          <th>Setor</th>
+          <th>Admissão</th>
+          <th>Demissão</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for prestador in prestadores %}
+          <tr class="row-accent">
+            <td>{{ prestador.matricula }}</td>
+            <td>{{ prestador.nome_funcionario }}</td>
+            <td>{{ prestador.nome_empresa }}</td>
+            <td>{{ prestador.setor }}</td>
+            <td>{{ prestador.data_admissao|date:"d/m/Y" }}</td>
+            <td>{% if prestador.data_demissao %}{{ prestador.data_demissao|date:"d/m/Y" }}{% else %}—{% endif %}</td>
+            <td class="actions">
+              <a href="{% url 'pj_detail' prestador.pk %}">Ver</a>
+              <a href="{% url 'pj_update' prestador.pk %}">Editar</a>
+              <a href="{% url 'pj_delete' prestador.pk %}">Excluir</a>
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="7" class="empty">Nenhum prestador cadastrado.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

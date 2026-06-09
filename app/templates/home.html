@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block title %}RH - Registros — Início{% endblock %}
+
+{% block content %}
+  <style>
+    .home-container {
+      max-width: 800px;
+      margin: 60px auto;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .home-container h1 {
+      color: #285959;
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    .home-container p {
+      color: #555;
+      margin-bottom: 40px;
+      font-size: 1rem;
+    }
+
+    .cards {
+      display: flex;
+      gap: 30px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      background-color: #FFFFFF;
+      border-left: 5px solid #285959;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 40px 30px;
+      width: 280px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+    }
+
+    .card-icon {
+      font-size: 2.5rem;
+      margin-bottom: 16px;
+    }
+
+    .card h2 {
+      color: #285959;
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      color: #666;
+      font-size: 0.9rem;
+      margin-bottom: 20px;
+    }
+
+    .card-btn {
+      display: inline-block;
+      background-color: #285959;
+      color: #fff;
+      padding: 10px 22px;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .card-btn:hover {
+      background-color: #A4C0B0;
+      color: #285959;
+    }
+  </style>
+
+  <div class="home-container">
+    <h1>RH - Registros</h1>
+    <p>Selecione o módulo que deseja acessar.</p>
+
+    <div class="cards">
+      <a href="{% url 'pj_list' %}" class="card">
+        <div class="card-icon">&#128196;</div>
+        <h2>Prestadores PJ</h2>
+        <p>Gerencie os prestadores de serviço, consulte matrículas, setores e períodos de contrato.</p>
+        <span class="card-btn">Acessar Prestadores</span>
+      </a>
+
+      <a href="{% url 'cat_list' %}" class="card">
+        <div class="card-icon">&#128657;</div>
+        <h2>CAT</h2>
+        <p>Registre e acompanhe as Comunicações de Acidente de Trabalho dos funcionários.</p>
+        <span class="card-btn">Acessar CAT</span>
+      </a>
+
+      <a href="{% url 'treinamento_list' %}" class="card">
+        <div class="card-icon">&#127979;</div>
+        <h2>Treinamentos</h2>
+        <p>Gerencie os treinamentos por área, acompanhe status e carga horária programada.</p>
+        <span class="card-btn">Acessar Treinamentos</span>
+      </a>
+
+      <a href="{% url 'vagas_list' %}" class="card">
+        <div class="card-icon">&#128084;</div>
+        <h2>Vagas</h2>
+        <p>Acompanhe as vagas abertas e encerradas por empresa, cargo e tipo de contratação.</p>
+        <span class="card-btn">Acessar Vagas</span>
+      </a>
+    </div>
+  </div>
+{% endblock %}

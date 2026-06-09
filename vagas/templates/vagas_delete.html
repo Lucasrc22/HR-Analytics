@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <style>
+    .delete-container {
+      max-width: 500px;
+      margin: 40px auto;
+      background-color: #FFFFFF;
+      padding: 30px;
+      border-radius: 10px;
+      border-left: 4px solid #d9534f;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .delete-container h1 {
+      color: #285959;
+      margin-bottom: 20px;
+    }
+
+    .delete-container p {
+      color: #555;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .delete-warning {
+      background-color: #f2dede;
+      border: 1px solid #ebccd1;
+      color: #d9534f;
+      padding: 15px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+    }
+
+    .buttons-container {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .btn {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-danger {
+      background-color: #d9534f;
+      color: #FFFFFF;
+    }
+
+    .btn-danger:hover {
+      background-color: #d2221c;
+    }
+
+    .btn-cancel {
+      background-color: #A4C0B0;
+      color: #285959;
+    }
+
+    .btn-cancel:hover {
+      background-color: #8fb5a5;
+    }
+  </style>
+
+  <div class="delete-container">
+    <h1>Deletar Vaga</h1>
+    <div class="delete-warning">
+      <strong>&#9888;&#65039; Aviso:</strong> Esta ação não pode ser desfeita!
+    </div>
+    <p>Você tem certeza que deseja deletar a vaga <strong>{{ object.cargo }}</strong> da empresa <strong>{{ object.empresa }}</strong>?</p>
+
+    <form method="post">
+      {% csrf_token %}
+      <div class="buttons-container">
+        <button type="submit" class="btn btn-danger">Confirmar Exclusão</button>
+        <a href="{% url 'vagas_detail' pk=object.pk %}" class="btn btn-cancel">Cancelar</a>
+      </div>
+    </form>
+  </div>
+{% endblock %}

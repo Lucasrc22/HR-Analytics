@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+
+{% block title %}CAT — Lista{% endblock %}
+
+{% block content %}
+  <style>
+    .container {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+
+    .container h1 {
+      color: #285959;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .container p {
+      color: #555;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .btn-create {
+      display: inline-block;
+      background-color: #285959;
+      color: #FFFFFF;
+      padding: 12px 20px;
+      border-radius: 4px;
+      text-decoration: none;
+      margin-bottom: 20px;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-create:hover {
+      background-color: #A4C0B0;
+      color: #285959;
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: #FFFFFF;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .table thead {
+      background-color: #285959;
+      color: #FFFFFF;
+    }
+
+    .table thead th {
+      padding: 15px;
+      text-align: left;
+      font-weight: 600;
+    }
+
+    .table tbody tr {
+      border-bottom: 1px solid #CED7D7;
+    }
+
+    .table tbody tr:hover {
+      background-color: #F5F5F5;
+    }
+
+    .table tbody td {
+      padding: 15px;
+    }
+
+    .table .row-accent {
+      border-left: 4px solid #A4C0B0;
+    }
+
+    .actions a {
+      margin-right: 8px;
+      text-decoration: none;
+      font-size: 13px;
+      color: #285959;
+    }
+
+    .actions a:hover {
+      text-decoration: underline;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 30px;
+      color: #888;
+    }
+
+    .search-form {
+      margin-bottom: 20px;
+    }
+
+    .search-form input[type="text"] {
+      padding: 10px;
+      border: 1px solid #CED7D7;
+      border-radius: 4px;
+      width: 250px;
+    }
+
+    .search-form button {
+      padding: 10px 16px;
+      border: none;
+      background-color: #285959;
+      color: #FFFFFF;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  </style>
+
+  <div class="container" align="center">
+    <h1>CAT</h1>
+    <p>Lista de Comunicações de Acidente de Trabalho registradas.</p>
+
+    <a href="{% url 'new_cat' %}" class="btn-create">+ Novo CAT</a>
+
+    <form method="get" class="search-form">
+      <input type="text" name="search" placeholder="Buscar por funcionário..." value="{{ request.GET.search|default:'' }}">
+      <button type="submit">Buscar</button>
+    </form>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Empresa</th>
+          <th>Matrícula</th>
+          <th>Funcionário</th>
+          <th>Setor</th>
+          <th>Data de Afastamento</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for cat in cats %}
+          <tr class="row-accent">
+            <td>{{ cat.nom_empresa }}</td>
+            <td>{{ cat.matricula }}</td>
+            <td>{{ cat.nom_funcionario }}</td>
+            <td>{{ cat.setor }}</td>
+            <td>{% if cat.dat_afast_func_acidte %}{{ cat.dat_afast_func_acidte|date:"d/m/Y" }}{% else %}—{% endif %}</td>
+            <td class="actions">
+              <a href="{% url 'cat_detail' cat.pk %}">Ver</a>
+              {% if user.is_authenticated %}
+                <a href="{% url 'cat_update' cat.pk %}">Editar</a>
+                <a href="{% url 'cat_delete' cat.pk %}">Excluir</a>
+              {% endif %}
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="6" class="empty">Nenhum CAT registrado.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

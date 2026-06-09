@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <style>
+    .container {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+
+    .container h1 {
+      color: #285959;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .container p {
+      color: #555;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .btn-create {
+      display: inline-block;
+      background-color: #285959;
+      color: #FFFFFF;
+      padding: 12px 20px;
+      border-radius: 4px;
+      text-decoration: none;
+      margin-bottom: 20px;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-create:hover {
+      background-color: #A4C0B0;
+      color: #285959;
+    }
+
+    .search-form {
+      margin-bottom: 20px;
+    }
+
+    .search-form input[type="text"] {
+      padding: 10px;
+      border: 1px solid #CED7D7;
+      border-radius: 4px;
+      width: 250px;
+    }
+
+    .search-form button {
+      padding: 10px 16px;
+      border: none;
+      background-color: #285959;
+      color: #FFFFFF;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: #FFFFFF;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .table thead {
+      background-color: #285959;
+      color: #FFFFFF;
+    }
+
+    .table thead th {
+      padding: 15px;
+      text-align: left;
+      font-weight: 600;
+    }
+
+    .table tbody tr {
+      border-bottom: 1px solid #CED7D7;
+    }
+
+    .table tbody tr:hover {
+      background-color: #F5F5F5;
+    }
+
+    .table tbody td {
+      padding: 15px;
+    }
+
+    .table .row-accent {
+      border-left: 4px solid #A4C0B0;
+    }
+
+    .badge-ativo {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      background-color: #A4C0B0;
+      color: #285959;
+    }
+
+    .badge-inativo {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      background-color: #E0E0E0;
+      color: #555;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 30px;
+      color: #888;
+    }
+  </style>
+
+  <div class="container" align="center">
+    <h1>Prestadores PJ</h1>
+    <p>Lista de prestadores PJ cadastrados.</p>
+
+    <a href="{% url 'new_prestador' %}" class="btn-create">+ Novo Prestador</a>
+
+    <form method="get" class="search-form">
+      <input type="text" name="search" placeholder="Buscar por razão social..." value="{{ request.GET.search }}">
+      <button type="submit">Buscar</button>
+    </form>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>CNPJ</th>
+          <th>Razão social</th>
+          <th>Nome fantasia</th>
+          <th>Representante</th>
+          <th>E-mail</th>
+          <th>Telefone</th>
+          <th>Situação</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for prestador in prestadores %}
+          <tr class="row-accent">
+            <td>{{ prestador.cnpj }}</td>
+            <td>{{ prestador.razao_social }}</td>
+            <td>{{ prestador.nome_fantasia|default:"—" }}</td>
+            <td>{{ prestador.representante|default:"—" }}</td>
+            <td>{{ prestador.email|default:"—" }}</td>
+            <td>{{ prestador.telefone|default:"—" }}</td>
+            <td>
+              {% if prestador.ativo %}
+                <span class="badge-ativo">Ativo</span>
+              {% else %}
+                <span class="badge-inativo">Inativo</span>
+              {% endif %}
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="7" class="empty">Nenhum prestador PJ cadastrado.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block title %}Vaga — Detalhe{% endblock %}
+
+{% block content %}
+  <style>
+    .card {
+      background-color: #FFFFFF;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+      max-width: 500px;
+      margin: 40px auto;
+      border-left: 4px solid #285959;
+      padding: 30px;
+    }
+
+    .card h2 {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      color: #285959;
+    }
+
+    .card p {
+      font-size: 1rem;
+      margin-bottom: 10px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .badge-aberta {
+      background-color: #d4edda;
+      color: #155724;
+    }
+
+    .badge-fechada {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+
+    .buttons-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 24px;
+      gap: 10px;
+    }
+
+    .btn {
+      display: inline-block;
+      background-color: #285959;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease-in-out;
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      background-color: #A4C0B0;
+      color: #285959;
+    }
+
+    .btn-danger {
+      background-color: #d9534f;
+    }
+
+    .btn-danger:hover {
+      background-color: #d2221c;
+      color: #fff;
+    }
+
+    .btn-back {
+      background-color: #CED7D7;
+      color: #333;
+    }
+
+    .btn-back:hover {
+      background-color: #b0bcbc;
+    }
+  </style>
+
+  <div class="card">
+    <h2>{{ vaga.cargo }}</h2>
+    <p><strong>Empresa:</strong> {{ vaga.empresa }}</p>
+    <p><strong>Tipo de Vaga:</strong> {{ vaga.tipo_vaga }}</p>
+    <p><strong>Data de Abertura:</strong> {{ vaga.data_abertura|date:"d/m/Y" }}</p>
+    <p><strong>Data de Fechamento:</strong> {{ vaga.data_fechamento|date:"d/m/Y" }}</p>
+    <p>
+      <strong>Status:</strong>
+      {% if vaga.status == 'Aberta' %}
+        <span class="badge badge-aberta">Aberta</span>
+      {% else %}
+        <span class="badge badge-fechada">Fechada</span>
+      {% endif %}
+    </p>
+  </div>
+
+  <div class="buttons-container">
+    <a href="{% url 'vagas_list' %}" class="btn btn-back">Voltar</a>
+    <a href="{% url 'vagas_update' vaga.pk %}" class="btn">Editar</a>
+    <a href="{% url 'vagas_delete' vaga.pk %}" class="btn btn-danger">Excluir</a>
+  </div>
+{% endblock %}

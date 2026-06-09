@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %} <!--adiciona um token de segurança para proteger contra ataques CSRF (Cross-Site Request Forgery)-->
+        <div class = "form-group">
+            {{user_form.username.errors }} <!--exibe mensagens de erro relacionadas ao campo de nome de usuário, caso haja algum erro de validação-->
+            <label>Usuário: </label>
+            {{user_form.username}} <!--campo de entrada para o nome de usuário, usando o formulário passado pela view-->     
+        </div>
+        <div class = "form-group">
+            {{user_form.password1.errors }} <!--exibe mensagens de erro relacionadas ao campo de senha, caso haja algum erro de validação-->
+            <label>Senha: </label>
+            {{user_form.password1}} <!--campo de entrada para a senha, usando o formulário passado pela view-->     
+        </div>
+        <div class = "form-group">
+            {{user_form.password2.errors }} <!--exibe mensagens de erro relacionadas ao campo de confirmação de senha, caso haja algum erro de validação-->
+
+            <label>Confirmar Senha: </label>
+            {{user_form.password2}} <!--campo de entrada para a confirmação da senha, usando o formulário passado pela view-->     
+        </div>
+        <div class = "form-group">
+            <input type="submit" value="Cadastrar"> <!--botão de envio do formulário-->
+        </div>
+        
+    </form>
+
+{% endblock %}

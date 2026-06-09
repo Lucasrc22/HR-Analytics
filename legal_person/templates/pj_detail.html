@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <style>
+    .car-card {
+      background-color: #FFFFFF;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+      overflow: hidden;
+      text-align: center;
+      transition: all 0.3s ease;
+      max-width: 500px;
+      margin: 20px auto;
+      border-left: 4px solid #285959;
+      padding: 30px;
+    }
+
+    .car-card h2 {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      color: #285959;
+    }
+
+    .car-card p {
+      font-size: 1rem;
+      margin-bottom: 10px;
+      text-align: left;
+    }
+
+    .buttons-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+      gap: 10px;
+    }
+
+    .btn {
+      display: inline-block;
+      background-color: #285959;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease-in-out;
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      background-color: #A4C0B0;
+      color: #285959;
+    }
+
+    .btn-danger {
+      background-color: #d9534f;
+    }
+
+    .btn-danger:hover {
+      background-color: #d2221c;
+      color: #fff;
+    }
+
+    a {
+      text-decoration: none !important;
+    }
+  </style>
+
+  <div class="car-card">
+    <h2>{{ object.nome_funcionario }}</h2>
+    <p><strong>Matrícula:</strong> {{ object.matricula }}</p>
+    <p><strong>Empresa:</strong> {{ object.nome_empresa }}</p>
+    <p><strong>Setor:</strong> {{ object.setor }}</p>
+    <p><strong>Data de Admissão:</strong> {{ object.data_admissao|date:"d/m/Y" }}</p>
+    <p><strong>Data de Demissão:</strong> {% if object.data_demissao %}{{ object.data_demissao|date:"d/m/Y" }}{% else %}—{% endif %}</p>
+  </div>
+
+  {% if user.is_authenticated %}
+    <div class="buttons-container">
+      <a href="{% url 'pj_update' pk=object.pk %}" class="btn">Editar</a>
+      <a href="{% url 'pj_delete' pk=object.pk %}" class="btn btn-danger">Deletar</a>
+    </div>
+  {% endif %}
+{% endblock %}

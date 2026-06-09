@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <style>
+    .container {
+      max-width: 700px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+
+    .container h1 {
+      color: #285959;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .form-card {
+      background-color: #FFFFFF;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      padding: 30px;
+    }
+
+    .form-card table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .form-card th {
+      text-align: left;
+      padding: 10px 10px 10px 0;
+      color: #285959;
+      vertical-align: top;
+      width: 180px;
+    }
+
+    .form-card td {
+      padding: 10px 0;
+    }
+
+    .form-card input[type="text"],
+    .form-card input[type="email"],
+    .form-card input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #CED7D7;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    .form-card .helptext {
+      display: block;
+      font-size: 12px;
+      color: #888;
+      margin-top: 4px;
+    }
+
+    .form-card ul.errorlist {
+      color: #c0392b;
+      list-style: none;
+      padding: 0;
+      margin: 4px 0 0;
+      font-size: 13px;
+    }
+
+    .btn-submit {
+      display: inline-block;
+      background-color: #285959;
+      color: #FFFFFF;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-submit:hover {
+      background-color: #A4C0B0;
+      color: #285959;
+    }
+
+    .btn-back {
+      display: inline-block;
+      color: #285959;
+      text-decoration: none;
+      margin-top: 20px;
+      margin-left: 12px;
+    }
+  </style>
+
+  <div class="container">
+    <h1>Cadastrar novo prestador PJ</h1>
+
+    <div class="form-card">
+      <form method="post">
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+          <ul class="errorlist">
+            {% for error in form.non_field_errors %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+
+        <table>
+          {{ form.as_table }}
+        </table>
+
+        <button type="submit" class="btn-submit">Cadastrar</button>
+        <a href="{% url 'prestador_list' %}" class="btn-back">Cancelar</a>
+      </form>
+    </div>
+  </div>
+{% endblock %}

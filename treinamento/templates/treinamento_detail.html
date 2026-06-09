@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+
+{% block title %}Treinamento — Detalhe{% endblock %}
+
+{% block content %}
+  <style>
+    .card {
+      background-color: #FFFFFF;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+      max-width: 560px;
+      margin: 40px auto;
+      border-left: 4px solid #285959;
+      padding: 30px;
+    }
+
+    .card h2 {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      color: #285959;
+    }
+
+    .card p {
+      font-size: 1rem;
+      margin-bottom: 10px;
+    }
+
+    .status-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .status-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .badge-yes {
+      background-color: #d4edda;
+      color: #155724;
+    }
+
+    .badge-no {
+      background-color: #f8f9fa;
+      color: #999;
+    }
+
+    .buttons-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 24px;
+      gap: 10px;
+    }
+
+    .btn {
+      display: inline-block;
+      background-color: #285959;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease-in-out;
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      background-color: #A4C0B0;
+      color: #285959;
+    }
+
+    .btn-danger {
+      background-color: #d9534f;
+    }
+
+    .btn-danger:hover {
+      background-color: #d2221c;
+      color: #fff;
+    }
+
+    .btn-back {
+      background-color: #CED7D7;
+      color: #333;
+    }
+
+    .btn-back:hover {
+      background-color: #b0bcbc;
+    }
+  </style>
+
+  <div class="card">
+    <h2>{{ treinamento.treinamento }}</h2>
+    <p><strong>Área:</strong> {{ treinamento.area }}</p>
+    <p><strong>Participantes:</strong> {{ treinamento.participante }}</p>
+    <p><strong>Carga Horária:</strong> {{ treinamento.carga_horaria }}h</p>
+
+    <div class="status-grid">
+      <div class="status-item">
+        <span>Programado:</span>
+        {% if treinamento.programado %}<span class="badge badge-yes">Sim</span>{% else %}<span class="badge badge-no">Não</span>{% endif %}
+      </div>
+      <div class="status-item">
+        <span>Realizado:</span>
+        {% if treinamento.realizado %}<span class="badge badge-yes">Sim</span>{% else %}<span class="badge badge-no">Não</span>{% endif %}
+      </div>
+      <div class="status-item">
+        <span>Reprogramado:</span>
+        {% if treinamento.reprogramado %}<span class="badge badge-yes">Sim</span>{% else %}<span class="badge badge-no">Não</span>{% endif %}
+      </div>
+      <div class="status-item">
+        <span>Cancelado:</span>
+        {% if treinamento.cancelado %}<span class="badge badge-yes">Sim</span>{% else %}<span class="badge badge-no">Não</span>{% endif %}
+      </div>
+      <div class="status-item">
+        <span>Nenhuma alternativa:</span>
+        {% if treinamento.nenhuma_alternativa %}<span class="badge badge-yes">Sim</span>{% else %}<span class="badge badge-no">Não</span>{% endif %}
+      </div>
+      <div class="status-item">
+        <span>Sem data prevista:</span>
+        {% if treinamento.sem_data_prevista %}<span class="badge badge-yes">Sim</span>{% else %}<span class="badge badge-no">Não</span>{% endif %}
+      </div>
+      <div class="status-item">
+        <span>Não realizado:</span>
+        {% if treinamento.nao_realizado %}<span class="badge badge-yes">Sim</span>{% else %}<span class="badge badge-no">Não</span>{% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="buttons-container">
+    <a href="{% url 'treinamento_list' %}" class="btn btn-back">Voltar</a>
+    {% if user.is_authenticated %}
+      <a href="{% url 'treinamento_update' treinamento.pk %}" class="btn">Editar</a>
+      <a href="{% url 'treinamento_delete' treinamento.pk %}" class="btn btn-danger">Excluir</a>
+    {% endif %}
+  </div>
+{% endblock %}

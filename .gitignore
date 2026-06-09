@@ -1,0 +1,21 @@
+# Variáveis de ambiente / segredos
+.env
+
+# Banco local
+db.sqlite3
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Ambiente virtual
+venv/
+.venv/
+
+# IDEs
+.vscode/
+.idea/
+
+# Estáticos coletados
+/static/

@@ -1,0 +1,120 @@
+
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}{% endblock %}</title>
+  <style>
+    body {
+        font-family: 'Open Sans', sans-serif;
+        background-color: #FFFFFF;
+        color: #333;
+        margin: 0;
+        padding: 0;
+    }
+
+    header {
+        background-color: #285959;
+        color: #fff;
+        text-align: center;
+    }
+
+    footer {
+        background-color: #CED7D7;
+        color: #333;
+        padding: 20px;
+        text-align: center;
+    }
+
+    nav {
+        background-color: #285959;
+        color: #fff;
+        height: 50px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    nav ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    nav ul li {
+        margin: 0 10px;
+    }
+
+    nav ul li a {
+        color: #fff;
+        text-decoration: none;
+        font-size: 16px;
+        padding: 15px;
+        transition: all 0.3s ease;
+    }
+
+    nav ul li a:hover {
+        background-color: #A4C0B0;
+    }
+
+    nav ul li.active a {
+        background-color: #A4C0B0;
+    }
+
+    nav ul li.active a:hover {
+        background-color: #8fb5a5;
+    }
+
+    .nav-logo {
+        height: 50px;
+        padding: 0 16px;
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+    }
+
+    .nav-logo img {
+        height: 38px;
+        width: auto;
+    }
+
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="{% url 'home' %}" class="nav-logo">
+        <img src="{% static 'photos/Logo Galactus.png' %}" alt="Galactus">
+      </a>
+      <ul>
+        <li><a href="{% url 'home' %}">Início</a></li>
+        <li><a href="{% url 'pj_list' %}">Prestadores PJ</a></li>
+        <li><a href="{% url 'cat_list' %}">CAT</a></li>
+        <li><a href="{% url 'treinamento_list' %}">Treinamentos</a></li>
+        <li><a href="{% url 'vagas_list' %}">Vagas</a></li>
+
+        {% if user.is_authenticated %}
+          <li><a href="{% url 'logout' %}">Sair ({{ user.username }})</a></li>
+        {% else %}
+          <li><a href="{% url 'login' %}">Login</a></li>
+        {% endif %}
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    {% block content %}
+    {% endblock %}
+  </main>
+
+  <footer>
+    <p>&copy; 
+      2026 Galactus | Desenvolvido pela equipe de TI. 
+    </p>
+  </footer>
+</body>
+</html>
