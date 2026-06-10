@@ -92,11 +92,6 @@
       </a>
       <ul>
         <li><a href="{% url 'home' %}">Início</a></li>
-        <li><a href="{% url 'pj_list' %}">Prestadores PJ</a></li>
-        <li><a href="{% url 'cat_list' %}">CAT</a></li>
-        <li><a href="{% url 'treinamento_list' %}">Treinamentos</a></li>
-        <li><a href="{% url 'vagas_list' %}">Vagas</a></li>
-
         {% if user.is_authenticated %}
           <li><a href="{% url 'logout' %}">Sair ({{ user.username }})</a></li>
         {% else %}

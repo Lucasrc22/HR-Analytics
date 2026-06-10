@@ -1,5 +1,5 @@
 import django.forms as forms
-from legal_person.models import Prestador
+from pj_rh.models import Prestador
 
 
 class PrestadorForm(forms.ModelForm):

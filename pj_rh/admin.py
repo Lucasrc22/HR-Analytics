@@ -1,5 +1,5 @@
 from django.contrib import admin
-from legal_person.models import Prestador
+from pj_rh.models import Prestador
 
 
 class PrestadorAdmin(admin.ModelAdmin):

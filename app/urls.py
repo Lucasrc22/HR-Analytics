@@ -2,7 +2,7 @@
 from django.contrib import admin
 from django.urls import path
 from app.views import HomeView
-from legal_person.views import NewPJCreateView, PJListView, PJDetailView, PJUpdateView, PJDeleteView
+from pj_rh.views import NewPJCreateView, PJListView, PJDetailView, PJUpdateView, PJDeleteView
 from user.views import register_view, login_view, logout_view
 from cat.views import (
     CATListView,

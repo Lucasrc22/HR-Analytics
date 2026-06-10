@@ -32,7 +32,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'user',
-    'legal_person',
+    'pj_rh',
     'authentication',
     'cat',
     'treinamento',
@@ -72,28 +72,28 @@ WSGI_APPLICATION = 'app.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.oracle',
-#        # Usando SERVICE_NAME (não SID): monta o DSN no formato host:port/service_name.
-#        # Por isso o NAME recebe o DSN completo e HOST/PORT ficam vazios.
-#        'NAME': '{host}:{port}/{service}'.format(
-#            host=config('ORACLE_HOST'),                
-#            port=config('ORACLE_PORT', default='1521'),
-#            service=config('ORACLE_SERVICE_NAME'),
-#        ),
-#        'USER': config('ORACLE_USER'),
-#        'PASSWORD': config('ORACLE_PASSWORD'),
-#    }
-#}
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.oracle',
+        # Usando SERVICE_NAME (não SID): monta o DSN no formato host:port/service_name.
+        # Por isso o NAME recebe o DSN completo e HOST/PORT ficam vazios.
+        'NAME': '{host}:{port}/{service}'.format(
+            host=config('ORACLE_HOST'),                
+            port=config('ORACLE_PORT', default='1521'),
+            service=config('ORACLE_SERVICE_NAME'),
+        ),
+        'USER': config('ORACLE_USER'),
+        'PASSWORD': config('ORACLE_PASSWORD'),
+    }
+}
 
 # Fallback local em SQLite (descomente para desenvolver sem o Oracle disponível):
-DATABASES = {
-     'default': {
-         'ENGINE': 'django.db.backends.sqlite3',
-         'NAME': BASE_DIR / 'db.sqlite3',
-     }
- }
+#DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#    }
+#}
 
 
 # Password validation
