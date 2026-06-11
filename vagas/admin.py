@@ -4,13 +4,13 @@ from .models import Vagas
 
 @admin.register(Vagas)
 class VagasAdmin(admin.ModelAdmin):
-    list_display = ('empresa', 'cargo', 'tipo_vaga', 'data_abertura', 'data_fechamento', 'status')
-    list_filter = ('empresa', 'status', 'tipo_vaga')
-    search_fields = ('cargo', 'tipo_vaga')
+    list_display = ('empresa', 'cargo', 'area', 'tipo_vaga', 'quantidade', 'data_abertura', 'data_fechamento', 'status', 'sigiloso', 'consultoria')
+    list_filter = ('empresa', 'status', 'tipo_vaga', 'area', 'sigiloso', 'consultoria')
+    search_fields = ('cargo', 'tipo_vaga', 'area')
     list_per_page = 25
     fieldsets = (
         (None, {
-            'fields': ('empresa', 'cargo', 'tipo_vaga', 'status'),
+            'fields': ('empresa', 'cargo', 'area', 'tipo_vaga', 'quantidade', 'status', 'sigiloso', 'consultoria'),
         }),
         ('Datas', {
             'fields': ('data_abertura', 'data_fechamento'),

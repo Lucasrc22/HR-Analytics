@@ -19,7 +19,11 @@ class Vagas(models.Model):
 
 
     empresa = models.CharField("Empresa",max_length=100, null=False, blank=False, choices=EMPRESA)
+    sigiloso = models.BooleanField("Sigiloso", default=False)
     tipo_vaga = models.CharField("Tipo de Vaga",max_length=100, null=False, blank=False)
+    consultoria = models.BooleanField("Consultoria", default=False)
+    area = models.CharField("Área",max_length=100, null=False, blank=False)
+    quantidade = models.PositiveIntegerField("Quantidade", null=False, blank=False)
     data_abertura = models.DateField("Data de Abertura", null=False, blank=False)
     data_fechamento = models.DateField("Data de Fechamento", null=True, blank=True)
     cargo = models.CharField("Cargo",max_length=100, null=False, blank=False)

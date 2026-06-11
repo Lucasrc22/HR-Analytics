@@ -146,7 +146,9 @@
         <tr>
           <th>Empresa</th>
           <th>Cargo</th>
+          <th>Área</th>
           <th>Tipo de Vaga</th>
+          <th>Qtd.</th>
           <th>Data de Abertura</th>
           <th>Data de Fechamento</th>
           <th>Status</th>
@@ -158,7 +160,9 @@
           <tr class="row-accent">
             <td>{{ vaga.empresa }}</td>
             <td>{{ vaga.cargo }}</td>
+            <td>{{ vaga.area }}</td>
             <td>{{ vaga.tipo_vaga }}</td>
+            <td>{{ vaga.quantidade }}</td>
             <td>{{ vaga.data_abertura|date:"d/m/Y" }}</td>
             <td>{{ vaga.data_fechamento|date:"d/m/Y" }}</td>
             <td>
@@ -176,7 +180,7 @@
           </tr>
         {% empty %}
           <tr>
-            <td colspan="7" class="empty">Nenhuma vaga registrada.</td>
+            <td colspan="9" class="empty">Nenhuma vaga registrada.</td>
           </tr>
         {% endfor %}
       </tbody>
