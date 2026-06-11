@@ -1,0 +1,29 @@
+# Controle de versão / meta
+.git/
+.gitignore
+.gitattributes
+.dockerignore
+*.md
+
+# Segredos e banco local (passados via env_file em runtime, nunca na imagem)
+.env
+db.sqlite3
+
+# Ambiente virtual e caches Python
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Estáticos/mídia gerados (collectstatic roda no container)
+static/
+media/
+
+# Artefatos Docker (não precisam entrar no contexto da imagem)
+Dockerfile
+docker-compose*.yml
+
+# IDEs
+.vscode/
+.idea/

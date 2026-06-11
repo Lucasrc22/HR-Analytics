@@ -2,7 +2,7 @@
 
 import os
 from pathlib import Path
-from decouple import config
+from decouple import config, Csv
 
 # Compatibilidade do driver oracledb com o backend Oracle do Django
 # (oracledb substitui o antigo cx_Oracle). Mantém o "thin mode", sem
@@ -14,12 +14,18 @@ sys.modules["cx_Oracle"] = oracledb
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-k^&a)mdlju!u0o3ktgsc0812-o6)001e)6%%#ip#hfu7a93&52'
+# SECURITY WARNING: a SECRET_KEY é obrigatória e deve vir do ambiente (.env).
+# Sem default no código: se faltar a variável, o Django falha ao iniciar
+# (em vez de subir silenciosamente com uma chave insegura).
+SECRET_KEY = config('SECRET_KEY')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# SECURITY WARNING: nunca rode com DEBUG=True em produção.
+# Sem DEBUG no .env, o dev local cai no default True; o container define DEBUG=False.
+DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = []
+# Hosts permitidos e origens CSRF confiáveis (separados por vírgula no .env).
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1', cast=Csv())
+CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='', cast=Csv())
 
 
 # Application definition
@@ -41,6 +47,8 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    # WhiteNoise serve os estáticos com cache/compressão (logo após o SecurityMiddleware).
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -134,4 +142,38 @@ STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'app', 'templates')]
 
+# Arquivos de mídia (uploads de usuários)
+MEDIA_URL = 'media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# WhiteNoise: compressão dos estáticos. Sem manifest, para não quebrar caso
+# algum arquivo referenciado não exista no momento do collectstatic.
+STORAGES = {
+    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+    "staticfiles": {"BACKEND": "whitenoise.storage.CompressedStaticFilesStorage"},
+}
+
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# --- Segurança (aplicada atrás do proxy nginx) ---
+# O nginx repassa o protocolo original neste header (http/https).
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Endurecimento aplicado apenas fora do modo DEBUG (produção/container).
+if not DEBUG:
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    X_FRAME_OPTIONS = "DENY"
+
+    # IMPORTANTE: cookies "Secure" e redirecionamento SSL só funcionam sob HTTPS.
+    # Em acesso por HTTP puro (ex.: rede interna via IP:porta), ligá-los QUEBRA o
+    # login — o navegador não envia cookie Secure por HTTP. Por isso ficam atrelados
+    # ao HTTPS_ENABLED: deixe False enquanto for HTTP; mude para True ao ativar TLS.
+    HTTPS_ENABLED = config('HTTPS_ENABLED', default=False, cast=bool)
+    SESSION_COOKIE_SECURE = HTTPS_ENABLED
+    CSRF_COOKIE_SECURE = HTTPS_ENABLED
+    SECURE_SSL_REDIRECT = HTTPS_ENABLED
+    if HTTPS_ENABLED:
+        SECURE_HSTS_SECONDS = config('SECURE_HSTS_SECONDS', default=31536000, cast=int)
+        SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+        SECURE_HSTS_PRELOAD = True
