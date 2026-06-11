@@ -3,7 +3,7 @@
 ##########################################################################
 # Stage 1 — builder: instala as dependências numa virtualenv isolada
 ##########################################################################
-FROM python:3.14-slim AS builder
+FROM python:3.13-slim AS builder
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
@@ -30,7 +30,7 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 ##########################################################################
 # Stage 2 — runtime: imagem enxuta, sem toolchain, rodando como não-root
 ##########################################################################
-FROM python:3.14-slim AS runtime
+FROM python:3.13-slim AS runtime
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \

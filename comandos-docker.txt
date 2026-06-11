@@ -1,0 +1,114 @@
+==========================================================================
+ GUIA DE COMANDOS DOCKER  (anotacoes gerais)
+==========================================================================
+
+--------------------------------------------------------------------------
+ DOCKER COMPOSE (varios containers via docker-compose.yml)
+--------------------------------------------------------------------------
+docker compose up -d                  # sobe os servicos em segundo plano
+docker compose up --build -d          # reconstroi as imagens e sobe
+docker compose up                     # sobe em primeiro plano (ve os logs)
+docker compose down                   # para e remove containers (mantem volumes)
+docker compose down -v                # remove tambem os volumes (APAGA dados)
+docker compose stop                   # para os containers (sem remover)
+docker compose start                  # inicia containers parados
+docker compose restart <servico>      # reinicia um servico
+docker compose ps                     # lista os containers do projeto
+docker compose logs -f                # logs em tempo real (Ctrl+C sai do log)
+docker compose logs -f <servico>      # logs de um servico especifico
+docker compose config                 # valida o arquivo e mostra as variaveis
+docker compose exec <servico> sh      # abre shell dentro do container
+docker compose exec <servico> <cmd>   # roda um comando dentro do container
+docker compose build                  # so constroi (sem subir)
+docker compose pull                   # baixa imagens atualizadas
+
+
+--------------------------------------------------------------------------
+ IMAGENS
+--------------------------------------------------------------------------
+docker build -t nome:tag .            # constroi imagem a partir do Dockerfile
+docker images                         # lista imagens locais
+docker rmi <imagem>                   # remove uma imagem
+docker pull <imagem>                  # baixa imagem do registry (ex: nginx:latest)
+docker tag <img> usuario/img:tag      # renomeia/etiqueta imagem
+docker push usuario/img:tag           # envia imagem para o registry
+docker history <imagem>               # mostra as camadas da imagem
+
+
+--------------------------------------------------------------------------
+ CONTAINERS
+--------------------------------------------------------------------------
+docker ps                             # containers em execucao
+docker ps -a                          # todos os containers (inclui parados)
+docker run <imagem>                   # cria e executa um container
+docker run -d -p 8080:80 <imagem>     # detached + mapeia porta host:container
+docker run -it <imagem> sh            # interativo com terminal
+docker run --rm <imagem>              # remove o container ao terminar
+docker run --name meu_cont <imagem>   # define um nome
+docker start <container>              # inicia container parado
+docker stop <container>               # para container
+docker restart <container>            # reinicia container
+docker rm <container>                 # remove container parado
+docker rm -f <container>              # forca remocao (mesmo rodando)
+docker logs -f <container>            # logs em tempo real
+docker exec -it <container> sh        # abre shell no container
+docker inspect <container>            # detalhes (JSON) do container
+docker stats                          # uso de CPU/memoria em tempo real
+docker cp <container>:/caminho ./     # copia arquivo do container para o host
+docker cp ./arquivo <container>:/path # copia do host para o container
+
+
+--------------------------------------------------------------------------
+ VOLUMES (dados persistentes)
+--------------------------------------------------------------------------
+docker volume ls                      # lista volumes
+docker volume create <nome>           # cria volume
+docker volume inspect <nome>          # detalhes do volume
+docker volume rm <nome>               # remove volume
+docker run -v meu_vol:/dados <img>    # monta volume nomeado
+docker run -v $(pwd):/app <img>       # monta a pasta atual (bind mount)
+
+
+--------------------------------------------------------------------------
+ REDES
+--------------------------------------------------------------------------
+docker network ls                     # lista redes
+docker network create <nome>          # cria rede
+docker network inspect <nome>         # detalhes da rede
+docker network connect <rede> <cont>  # conecta container a uma rede
+docker network rm <nome>              # remove rede
+
+
+--------------------------------------------------------------------------
+ LIMPEZA (libera espaco)
+--------------------------------------------------------------------------
+docker system df                      # mostra espaco usado por docker
+docker system prune                   # remove containers/redes/imagens orfas
+docker system prune -a                # remove TUDO que nao esta em uso
+docker image prune                    # remove imagens penduradas (dangling)
+docker container prune                # remove containers parados
+docker volume prune                   # remove volumes nao usados
+
+
+--------------------------------------------------------------------------
+ DICAS
+--------------------------------------------------------------------------
+- "docker compose" (com espaco) = versao nova (v2). "docker-compose" = antiga.
+- -d  = detached (roda em segundo plano).
+- -p host:container  = mapeamento de porta (ex: -p 8004:80).
+- -v origem:destino  = volume / bind mount.
+- Ctrl+C nos logs NAO derruba o container (so sai da visualizacao).
+- "down -v" APAGA os volumes -> use com cuidado (perde dados).
+==========================================================================
+
+# 1. Derruba e remove os containers (mantém volumes e o Oracle externo)
+docker compose down
+
+# 2. Reconstrói as imagens do zero, sem cache
+docker compose build --no-cache
+
+# 3. Sobe de novo em segundo plano
+docker compose up -d
+
+# 4. Acompanha o boot
+docker compose logs -f

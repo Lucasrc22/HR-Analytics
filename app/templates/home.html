@@ -5,7 +5,7 @@
 {% block content %}
   <style>
     .home-container {
-      max-width: 800px;
+      max-width: 1200px;
       margin: 60px auto;
       padding: 20px;
       text-align: center;
@@ -25,8 +25,9 @@
 
     .cards {
       display: flex;
-      gap: 30px;
+      gap: 24px;
       justify-content: center;
+      align-items: stretch;
       flex-wrap: wrap;
     }
 
@@ -35,8 +36,10 @@
       border-left: 5px solid #285959;
       border-radius: 10px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      padding: 40px 30px;
-      width: 280px;
+      padding: 40px 24px;
+      flex: 1 1 0;
+      min-width: 240px;
+      max-width: 280px;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
       text-decoration: none;
       color: inherit;
