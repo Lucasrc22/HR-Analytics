@@ -2,6 +2,7 @@ from django.views.generic import ListView, CreateView, DetailView, UpdateView, D
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.urls import reverse_lazy
 from .models import CAT
+from .forms import CATForm
 
 
 class CATListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
@@ -28,7 +29,7 @@ class CATDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
 class NewCATCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = CAT
     template_name = "new_cat.html"
-    fields = "__all__"
+    form_class = CATForm
     success_url = "/cat/"
     permission_required = "cat.add_cat"
 
@@ -36,7 +37,7 @@ class NewCATCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
 class CATUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = CAT
     template_name = "cat_update.html"
-    fields = "__all__"
+    form_class = CATForm
     permission_required = "cat.change_cat"
 
     def get_success_url(self):

@@ -2,6 +2,7 @@ from django.views.generic import ListView, CreateView, DetailView, UpdateView, D
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.urls import reverse_lazy
 from .models import Vagas
+from .forms import VagasForm
 
 
 class VagasListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
@@ -28,7 +29,7 @@ class VagasDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
 class NewVagasCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Vagas
     template_name = "new_vagas.html"
-    fields = "__all__"
+    form_class = VagasForm
     success_url = "/vagas/"
     permission_required = "vagas.add_vagas"
 
@@ -36,7 +37,7 @@ class NewVagasCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView
 class VagasUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Vagas
     template_name = "vagas_update.html"
-    fields = "__all__"
+    form_class = VagasForm
     permission_required = "vagas.change_vagas"
 
     def get_success_url(self):

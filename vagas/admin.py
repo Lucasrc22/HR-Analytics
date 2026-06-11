@@ -15,4 +15,7 @@ class VagasAdmin(admin.ModelAdmin):
         ('Datas', {
             'fields': ('data_abertura', 'data_fechamento'),
         }),
+        ('Fechamento / Candidato', {
+            'fields': ('motivo', 'justificativa', 'nome_candidato', 'previsao_admissao', 'observacoes'),
+        }),
     )

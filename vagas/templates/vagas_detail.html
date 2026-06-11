@@ -101,6 +101,11 @@
         <span class="badge badge-fechada">Fechada</span>
       {% endif %}
     </p>
+    <p><strong>Motivo:</strong> {{ vaga.motivo|default:"—" }}</p>
+    <p><strong>Justificativa:</strong> {{ vaga.justificativa|default:"—" }}</p>
+    <p><strong>Nome do Candidato:</strong> {{ vaga.nome_candidato|default:"—" }}</p>
+    <p><strong>Previsão de Admissão:</strong> {% if vaga.previsao_admissao %}{{ vaga.previsao_admissao|date:"d/m/Y" }}{% else %}—{% endif %}</p>
+    <p><strong>Observações:</strong> {{ vaga.observacoes|default:"—" }}</p>
   </div>
 
   <div class="buttons-container">
