@@ -2,6 +2,7 @@ from django.views.generic import ListView, CreateView, DetailView, UpdateView, D
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.urls import reverse_lazy
 from .models import Treinamento
+from .forms import TreinamentoForm
 
 
 class TreinamentoListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
@@ -28,7 +29,7 @@ class TreinamentoDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailV
 class NewTreinamentoCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Treinamento
     template_name = "new_treinamento.html"
-    fields = "__all__"
+    form_class = TreinamentoForm
     success_url = "/treinamento/"
     permission_required = "treinamento.add_treinamento"
 
@@ -36,7 +37,7 @@ class NewTreinamentoCreateView(LoginRequiredMixin, PermissionRequiredMixin, Crea
 class TreinamentoUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Treinamento
     template_name = "treinamento_update.html"
-    fields = "__all__"
+    form_class = TreinamentoForm
     permission_required = "treinamento.change_treinamento"
 
     def get_success_url(self):

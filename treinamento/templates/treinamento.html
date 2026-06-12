@@ -150,6 +150,9 @@
           <th>Treinamento</th>
           <th>Participantes</th>
           <th>Carga Horária</th>
+          <th>Início</th>
+          <th>Fim Planejada</th>
+          <th>Fim</th>
           <th>Programado</th>
           <th>Realizado</th>
           <th>Ações</th>
@@ -162,6 +165,9 @@
             <td>{{ t.treinamento }}</td>
             <td>{{ t.participante }}</td>
             <td>{{ t.carga_horaria }}h</td>
+            <td>{% if t.data_inicio %}{{ t.data_inicio|date:"d/m/Y" }}{% else %}—{% endif %}</td>
+            <td>{% if t.data_fim_planejada %}{{ t.data_fim_planejada|date:"d/m/Y" }}{% else %}—{% endif %}</td>
+            <td>{% if t.data_fim %}{{ t.data_fim|date:"d/m/Y" }}{% else %}—{% endif %}</td>
             <td>
               {% if t.programado %}
                 <span class="badge badge-yes">Sim</span>
@@ -186,7 +192,7 @@
           </tr>
         {% empty %}
           <tr>
-            <td colspan="7" class="empty">Nenhum treinamento registrado.</td>
+            <td colspan="10" class="empty">Nenhum treinamento registrado.</td>
           </tr>
         {% endfor %}
       </tbody>

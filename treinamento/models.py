@@ -12,6 +12,8 @@ class Treinamento(models.Model):
     nenhuma_alternativa = models.BooleanField("Nenhuma Alternativa", default=False)
     sem_data_prevista = models.BooleanField("Sem Data Prevista", default=False)
     nao_realizado = models.BooleanField("Não Realizado", default=False)
-
+    data_inicio = models.DateField("Data de Início", null=True, blank=True)
+    data_fim_planejada = models.DateField("Data de Fim Planejada", null=True, blank=True)
+    data_fim = models.DateField("Data de Fim", null=True, blank=True)
     def __str__(self):
         return f"{self.area} - {self.treinamento} ({self.participante} participantes)"

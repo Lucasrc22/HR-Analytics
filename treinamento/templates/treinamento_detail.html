@@ -106,6 +106,9 @@
     <p><strong>Área:</strong> {{ treinamento.area }}</p>
     <p><strong>Participantes:</strong> {{ treinamento.participante }}</p>
     <p><strong>Carga Horária:</strong> {{ treinamento.carga_horaria }}h</p>
+    <p><strong>Data de Início:</strong> {% if treinamento.data_inicio %}{{ treinamento.data_inicio|date:"d/m/Y" }}{% else %}—{% endif %}</p>
+    <p><strong>Data de Fim Planejada:</strong> {% if treinamento.data_fim_planejada %}{{ treinamento.data_fim_planejada|date:"d/m/Y" }}{% else %}—{% endif %}</p>
+    <p><strong>Data de Fim:</strong> {% if treinamento.data_fim %}{{ treinamento.data_fim|date:"d/m/Y" }}{% else %}—{% endif %}</p>
 
     <div class="status-grid">
       <div class="status-item">
