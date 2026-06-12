@@ -7,7 +7,6 @@ class PrestadorForm(forms.ModelForm):
         model = Prestador
         fields = [
             "nome_empresa",
-            "matricula",
             "nome_funcionario",
             "setor",
             "data_admissao",

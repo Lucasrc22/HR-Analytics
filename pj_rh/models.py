@@ -13,7 +13,6 @@ class Prestador(models.Model):
 
     
     nome_empresa = models.CharField("Nome da empresa", max_length=200, choices=EMPRESA)
-    matricula = models.CharField("Matrícula", max_length=50, unique=True)
     nome_funcionario = models.CharField("Nome do funcionário", max_length=150)
     setor = models.CharField("Setor", max_length=120)
     data_admissao = models.DateField("Data de admissão")
@@ -25,4 +24,4 @@ class Prestador(models.Model):
         ordering = ["nome_empresa", "nome_funcionario"]
 
     def __str__(self):
-        return f"{self.nome_funcionario} — {self.nome_empresa} ({self.matricula})"
+        return f"{self.nome_funcionario} — {self.nome_empresa}"

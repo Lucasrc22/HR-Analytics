@@ -117,14 +117,13 @@
     <a href="{% url 'new_pj' %}" class="btn-create">+ Novo Prestador</a>
 
     <form method="get" class="search-form">
-      <input type="text" name="search" placeholder="Buscar por nome, matrícula ou empresa..." value="{{ request.GET.search }}">
+      <input type="text" name="search" placeholder="Buscar por nome ou empresa..." value="{{ request.GET.search }}">
       <button type="submit">Buscar</button>
     </form>
 
     <table class="table">
       <thead>
         <tr>
-          <th>Matrícula</th>
           <th>Nome do Funcionário</th>
           <th>Nome da Empresa</th>
           <th>Setor</th>
@@ -136,7 +135,6 @@
       <tbody>
         {% for prestador in prestadores %}
           <tr class="row-accent">
-            <td>{{ prestador.matricula }}</td>
             <td>{{ prestador.nome_funcionario }}</td>
             <td>{{ prestador.nome_empresa }}</td>
             <td>{{ prestador.setor }}</td>

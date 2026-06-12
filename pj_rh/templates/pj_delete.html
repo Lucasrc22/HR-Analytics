@@ -74,7 +74,7 @@
     <div class="delete-warning">
       <strong>Aviso:</strong> Esta ação não pode ser desfeita!
     </div>
-    <p>Você tem certeza que deseja excluir o prestador <strong>{{ object.nome_funcionario }}</strong> ({{ object.matricula }}) da empresa <strong>{{ object.nome_empresa }}</strong>?</p>
+    <p>Você tem certeza que deseja excluir o prestador <strong>{{ object.nome_funcionario }}</strong> da empresa <strong>{{ object.nome_empresa }}</strong>?</p>
 
     <form method="post">
       {% csrf_token %}

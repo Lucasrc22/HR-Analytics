@@ -16,8 +16,7 @@ class PJListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
         search = self.request.GET.get('search')
         if search:
             queryset = queryset.filter(nome_funcionario__icontains=search) | \
-                       queryset.filter(nome_empresa__icontains=search) | \
-                       queryset.filter(matricula__icontains=search)
+                       queryset.filter(nome_empresa__icontains=search)
         return queryset
 
 
