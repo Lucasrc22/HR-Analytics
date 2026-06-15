@@ -11,9 +11,11 @@ class Prestador(models.Model):
         ('JUBARTE CONCEITO','JUBARTE CONCEITO')
     ]
 
+
     
     nome_empresa = models.CharField("Nome da empresa", max_length=200, choices=EMPRESA)
     nome_funcionario = models.CharField("Nome do funcionário", max_length=150)
+    cargo = models.CharField("Cargo", max_length=120, default="")
     setor = models.CharField("Setor", max_length=120)
     data_admissao = models.DateField("Data de admissão")
     data_demissao = models.DateField("Data de demissão", null=True, blank=True)
