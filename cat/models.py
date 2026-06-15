@@ -19,7 +19,8 @@ class CAT(models.Model):
     dat_afast_func_acidte = models.DateField("Data de afastamento")
 
     class Meta:
-        db_table = "cat"
+        
+        db_table = "cat_rh"
 
     def __str__(self):
         return f"CAT {self.matricula} - {self.nom_funcionario}"
