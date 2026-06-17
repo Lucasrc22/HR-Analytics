@@ -15,5 +15,10 @@ class Treinamento(models.Model):
     data_inicio = models.DateField("Data de Início", null=True, blank=True)
     data_fim_planejada = models.DateField("Data de Fim Planejada", null=True, blank=True)
     data_fim = models.DateField("Data de Fim", null=True, blank=True)
+
+    class Meta:
+        
+        db_table = "treinamento_rh"
+
     def __str__(self):
         return f"{self.area} - {self.treinamento} ({self.participante} participantes)"

@@ -34,5 +34,11 @@ class Vagas(models.Model):
     previsao_admissao = models.DateField("Previsão de Admissão", null=True, blank=True)
     observacoes = models.TextField("Observações", null=True, blank=True)
     
+
+    class Meta:
+        
+        db_table = "vagas_rh"
+
+
     def __str__(self):
         return f"{self.empresa} - {self.cargo} ({self.status})"
