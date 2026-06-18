@@ -16,7 +16,8 @@ class CAT(models.Model):
     matricula = models.IntegerField("Matrícula", default=0)
     nom_funcionario = models.CharField("Nome do funcionário", max_length=60, default="")
     setor = models.CharField("Setor", max_length=60, default="")
-    dat_afast_func_acidte = models.DateField("Data de afastamento")
+    acidente = models.CharField("Acidente", max_length=100, default="")
+    dat_afast_func_acidte = models.DateField("Data do acidente", default=None)
 
     class Meta:
         
