@@ -74,7 +74,8 @@
     <p><strong>Empresa:</strong> {{ cat.nom_empresa }}</p>
     <p><strong>Matrícula:</strong> {{ cat.matricula }}</p>
     <p><strong>Setor:</strong> {{ cat.setor }}</p>
-    <p><strong>Data de Afastamento:</strong> {% if cat.dat_afast_func_acidte %}{{ cat.dat_afast_func_acidte|date:"d/m/Y" }}{% else %}—{% endif %}</p>
+    <p><strong>Acidente:</strong> {{ cat.acidente }}</p>
+    <p><strong>Data do Acidente:</strong> {% if cat.dat_afast_func_acidte %}{{ cat.dat_afast_func_acidte|date:"d/m/Y" }}{% else %}—{% endif %}</p>
   </div>
 
   <div class="buttons-container">
