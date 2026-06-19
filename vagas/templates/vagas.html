@@ -38,6 +38,23 @@
       color: #285959;
     }
 
+    .btn-export {
+      display: inline-block;
+      background-color: #FFFFFF;
+      color: #285959;
+      border: 1px solid #285959;
+      padding: 11px 20px;
+      border-radius: 4px;
+      text-decoration: none;
+      margin-bottom: 20px;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-export:hover {
+      background-color: #A4C0B0;
+      color: #285959;
+    }
+
     .table {
       width: 100%;
       border-collapse: collapse;
@@ -135,6 +152,7 @@
     <p>Lista de vagas abertas e encerradas por empresa.</p>
 
     <a href="{% url 'new_vagas' %}" class="btn-create">+ Nova Vaga</a>
+    <a href="{% url 'vagas_export' %}" class="btn-export">⭳ Exportar</a>
 
     <form method="get" class="search-form">
       <input type="text" name="search" placeholder="Buscar por cargo..." value="{{ request.GET.search|default:'' }}">

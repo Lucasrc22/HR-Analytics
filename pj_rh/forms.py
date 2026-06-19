@@ -8,6 +8,7 @@ class PrestadorForm(forms.ModelForm):
         fields = [
             "nome_empresa",
             "nome_funcionario",
+            "cargo",
             "setor",
             "data_admissao",
             "data_demissao",

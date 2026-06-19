@@ -14,7 +14,7 @@ class Treinamento(models.Model):
     nao_realizado = models.BooleanField("Não Realizado", default=False)
     data_inicio = models.DateField("Data de Início", null=True, blank=True)
     data_fim_planejada = models.DateField("Data de Fim Planejada", null=True, blank=True)
-    data_fim = models.DateField("Data de Fim", null=True, blank=True)
+    data_realizada = models.DateField("Data Realizada", null=True, blank=True)
 
     class Meta:
         

@@ -38,6 +38,23 @@
       color: #285959;
     }
 
+    .btn-export {
+      display: inline-block;
+      background-color: #FFFFFF;
+      color: #285959;
+      border: 1px solid #285959;
+      padding: 11px 20px;
+      border-radius: 4px;
+      text-decoration: none;
+      margin-bottom: 20px;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-export:hover {
+      background-color: #A4C0B0;
+      color: #285959;
+    }
+
     .table {
       width: 100%;
       border-collapse: collapse;
@@ -136,6 +153,7 @@
 
     {% if user.is_authenticated %}
       <a href="{% url 'new_treinamento' %}" class="btn-create">+ Novo Treinamento</a>
+      <a href="{% url 'treinamento_export' %}" class="btn-export">⭳ Exportar</a>
     {% endif %}
 
     <form method="get" class="search-form">
@@ -151,8 +169,8 @@
           <th>Participantes</th>
           <th>Carga Horária</th>
           <th>Início</th>
-          <th>Fim Planejada</th>
-          <th>Fim</th>
+          <th>Data Planejada</th>
+          <th>Data Realizada</th>
           <th>Programado</th>
           <th>Realizado</th>
           <th>Ações</th>
@@ -167,7 +185,7 @@
             <td>{{ t.carga_horaria }}h</td>
             <td>{% if t.data_inicio %}{{ t.data_inicio|date:"d/m/Y" }}{% else %}—{% endif %}</td>
             <td>{% if t.data_fim_planejada %}{{ t.data_fim_planejada|date:"d/m/Y" }}{% else %}—{% endif %}</td>
-            <td>{% if t.data_fim %}{{ t.data_fim|date:"d/m/Y" }}{% else %}—{% endif %}</td>
+            <td>{% if t.data_realizada %}{{ t.data_realizada|date:"d/m/Y" }}{% else %}—{% endif %}</td>
             <td>
               {% if t.programado %}
                 <span class="badge badge-yes">Sim</span>

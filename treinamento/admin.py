@@ -6,7 +6,7 @@ from .models import Treinamento
 class TreinamentoAdmin(admin.ModelAdmin):
     list_display = (
         'area', 'treinamento', 'participante', 'carga_horaria',
-        'data_inicio', 'data_fim_planejada', 'data_fim',
+        'data_inicio', 'data_fim_planejada', 'data_realizada',
         'programado', 'realizado', 'reprogramado', 'cancelado',
         'nenhuma_alternativa', 'sem_data_prevista', 'nao_realizado',
     )
@@ -21,7 +21,7 @@ class TreinamentoAdmin(admin.ModelAdmin):
             'fields': ('area', 'treinamento', 'participante', 'carga_horaria'),
         }),
         ('Período', {
-            'fields': ('data_inicio','data_fim_planejada', 'data_fim'),
+            'fields': ('data_inicio','data_fim_planejada', 'data_realizada'),
         }),
         ('Status', {
             'fields': (

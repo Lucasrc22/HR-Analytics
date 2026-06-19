@@ -1,8 +1,16 @@
+import os
+
+import pandas as pd
+from django.conf import settings
+from django.contrib.auth.decorators import login_required, permission_required
+from django.http import Http404, HttpResponse, HttpResponseRedirect
+from django.shortcuts import render
+from django.utils import timezone
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from pj_rh.models import Prestador
 from pj_rh.forms import PrestadorForm
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 
 
 class PJListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
@@ -49,3 +57,56 @@ class PJDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     template_name = "pj_delete.html"
     success_url = "/pj/"
     permission_required = "pj_rh.delete_prestador"
+
+
+# Colunas exportadas: campo do model -> cabeçalho amigável no Excel.
+EXPORT_COLUNAS = {
+    "nome_empresa": "Nome da empresa",
+    "nome_funcionario": "Nome do funcionário",
+    "cargo": "Cargo",
+    "setor": "Setor",
+    "data_admissao": "Data de admissão",
+    "data_demissao": "Data de demissão",
+}
+
+
+def buscar_dados_pj():
+    """Gera um .xlsx com toda a base de prestadores no MEDIA_ROOT e devolve o nome do arquivo."""
+    queryset = Prestador.objects.all().order_by("nome_empresa", "nome_funcionario")
+    df = pd.DataFrame(list(queryset.values(*EXPORT_COLUNAS.keys())))
+    df = df.reindex(columns=list(EXPORT_COLUNAS.keys()))
+    df = df.rename(columns=EXPORT_COLUNAS)
+
+    file_name = f"prestadores_{timezone.localtime().strftime('%Y%m%d_%H%M%S')}.xlsx"
+    os.makedirs(settings.MEDIA_ROOT, exist_ok=True)
+    df.to_excel(os.path.join(settings.MEDIA_ROOT, file_name), index=False)
+    return file_name
+
+
+@login_required
+@permission_required("pj_rh.view_prestador", raise_exception=True)
+def exportar_pj(request):
+    file_name = buscar_dados_pj()
+    return HttpResponseRedirect(reverse("pj_get_file", args=[file_name]))
+
+
+@login_required
+@permission_required("pj_rh.view_prestador", raise_exception=True)
+def pj_get_file(request, file_path):
+    return render(request, "pj_get_file.html", {"file_path": file_path})
+
+
+@login_required
+@permission_required("pj_rh.view_prestador", raise_exception=True)
+def pj_download(request, file_path):
+    # basename evita path traversal: só arquivos dentro do MEDIA_ROOT.
+    full_path = os.path.join(settings.MEDIA_ROOT, os.path.basename(file_path))
+    if os.path.exists(full_path):
+        with open(full_path, "rb") as fh:
+            response = HttpResponse(
+                fh.read(),
+                content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            )
+            response["Content-Disposition"] = "attachment; filename=" + os.path.basename(full_path)
+            return response
+    raise Http404

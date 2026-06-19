@@ -9,5 +9,5 @@ class TreinamentoForm(forms.ModelForm):
         widgets = {
             "data_inicio": forms.DateInput(attrs={"type": "date"}),
             "data_fim_planejada": forms.DateInput(attrs={"type": "date"}),
-            "data_fim": forms.DateInput(attrs={"type": "date"}),
+            "data_realizada": forms.DateInput(attrs={"type": "date"}),
         }
