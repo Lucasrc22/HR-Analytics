@@ -5,7 +5,8 @@ class Vagas(models.Model):
 
     STATUS_CHOICES = [
         ('Aberta', 'Aberta'),
-        ('Fechada', 'Fechada')
+        ('Fechada', 'Fechada'),
+        ('Suspensa', 'Suspensa')
     ]
 
     EMPRESA = [
@@ -15,6 +16,11 @@ class Vagas(models.Model):
         ('TRANCOSO BIO RISORT AGROPECUARIA LTDA', 'TRANCOSO BIO RISORT AGROPECUARIA LTDA'),
         ('MEG DISTRIBUIDORA DE COMBUSTIVEIS LTDA', 'MEG DISTRIBUIDORA DE COMBUSTIVEIS LTDA'),
         ('JUBARTE CONCEITO','JUBARTE CONCEITO')
+    ]
+
+    MOTIVO = [
+        ('AUMENTO DE QUADRO','AUMENTO DE QUADRO'),
+        ('SUBSTITUIÇÃO','SUBSTITUIÇÃO'),
     ]
 
 
@@ -28,7 +34,7 @@ class Vagas(models.Model):
     data_fechamento = models.DateField("Data de Fechamento", null=True, blank=True)
     cargo = models.CharField("Cargo",max_length=100, null=False, blank=False)
     status = models.CharField("Status",max_length=100, null=False, blank=False, choices=STATUS_CHOICES)
-    motivo = models.TextField("Motivo", null=True, blank=True)
+    motivo = models.CharField("Motivo", max_length=200, null=True, blank=True, choices=MOTIVO)
     justificativa = models.TextField("Justificativa", null=True, blank=True)
     nome_candidato = models.CharField("Nome do Candidato", max_length=100, null=True, blank=True)
     previsao_admissao = models.DateField("Previsão de Admissão", null=True, blank=True)

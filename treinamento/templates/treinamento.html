@@ -126,15 +126,29 @@
       color: #888;
     }
 
-    .search-form {
+    .search-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
       margin-bottom: 20px;
     }
 
-    .search-form input[type="text"] {
+    .search-form {
+      display: flex;
+      gap: 8px;
+    }
+
+    .search-form input[type="text"],
+    .search-form select {
       padding: 10px;
       border: 1px solid #CED7D7;
       border-radius: 4px;
-      width: 250px;
+      width: 270px;
+    }
+
+    .search-form select[name="mes"] {
+      width: 300px;
     }
 
     .search-form button {
@@ -156,10 +170,22 @@
       <a href="{% url 'treinamento_export' %}" class="btn-export">⭳ Exportar</a>
     {% endif %}
 
-    <form method="get" class="search-form">
-      <input type="text" name="search" placeholder="Buscar por treinamento..." value="{{ request.GET.search|default:'' }}">
-      <button type="submit">Buscar</button>
-    </form>
+    <div class="search-bar">
+      <form method="get" class="search-form">
+        <input type="text" name="search" placeholder="Buscar por treinamento..." value="{{ request.GET.search|default:'' }}">
+        <button type="submit">Buscar</button>
+      </form>
+
+      <form method="get" class="search-form">
+        <select name="mes">
+          <option value="">Filtrar por mês de treinamento programado...</option>
+          {% for mes in meses %}
+            <option value="{{ mes }}" {% if request.GET.mes == mes %}selected{% endif %}>{{ mes|capfirst }}</option>
+          {% endfor %}
+        </select>
+        <button type="submit">Filtrar</button>
+      </form>
+    </div>
 
     <table class="table">
       <thead>
@@ -181,7 +207,7 @@
           <tr class="row-accent">
             <td>{{ t.area }}</td>
             <td>{{ t.treinamento }}</td>
-            <td>{{ t.participante }}</td>
+            <td>{{ t.funcionario }}</td>
             <td>{{ t.carga_horaria }}h</td>
             <td>{% if t.data_inicio %}{{ t.data_inicio|date:"d/m/Y" }}{% else %}—{% endif %}</td>
             <td>{% if t.data_fim_planejada %}{{ t.data_fim_planejada|date:"d/m/Y" }}{% else %}—{% endif %}</td>

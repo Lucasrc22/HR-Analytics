@@ -13,6 +13,23 @@ from .models import Treinamento
 from .forms import TreinamentoForm
 
 
+# Nome do mês (pt-BR, minúsculo) -> número, para filtrar por nome em vez de número.
+MESES = {
+    "janeiro": 1,
+    "fevereiro": 2,
+    "março": 3,
+    "abril": 4,
+    "maio": 5,
+    "junho": 6,
+    "julho": 7,
+    "agosto": 8,
+    "setembro": 9,
+    "outubro": 10,
+    "novembro": 11,
+    "dezembro": 12,
+}
+
+
 class TreinamentoListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = Treinamento
     template_name = "treinamento.html"
@@ -24,7 +41,16 @@ class TreinamentoListView(LoginRequiredMixin, PermissionRequiredMixin, ListView)
         search = self.request.GET.get("search")
         if search:
             queryset = queryset.filter(treinamento__icontains=search)
+
+        mes = self.request.GET.get("mes", "").strip().lower()
+        if mes in MESES:
+            queryset = queryset.filter(data_fim_planejada__month=MESES[mes])
         return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["meses"] = list(MESES.keys())
+        return context
 
 
 class TreinamentoDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
@@ -63,7 +89,7 @@ class TreinamentoDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteV
 EXPORT_COLUNAS = {
     "area": "Área",
     "treinamento": "Treinamento",
-    "participante": "Participante",
+    "funcionario": "Funcionário",
     "carga_horaria": "Carga Horária",
     "programado": "Programado",
     "realizado": "Realizado",

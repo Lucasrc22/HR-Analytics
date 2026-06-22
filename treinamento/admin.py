@@ -5,7 +5,7 @@ from .models import Treinamento
 @admin.register(Treinamento)
 class TreinamentoAdmin(admin.ModelAdmin):
     list_display = (
-        'area', 'treinamento', 'participante', 'carga_horaria',
+        'area', 'treinamento', 'funcionario', 'carga_horaria',
         'data_inicio', 'data_fim_planejada', 'data_realizada',
         'programado', 'realizado', 'reprogramado', 'cancelado',
         'nenhuma_alternativa', 'sem_data_prevista', 'nao_realizado',
@@ -18,7 +18,7 @@ class TreinamentoAdmin(admin.ModelAdmin):
     list_per_page = 25
     fieldsets = (
         (None, {
-            'fields': ('area', 'treinamento', 'participante', 'carga_horaria'),
+            'fields': ('area', 'treinamento', 'funcionario', 'carga_horaria'),
         }),
         ('Período', {
             'fields': ('data_inicio','data_fim_planejada', 'data_realizada'),

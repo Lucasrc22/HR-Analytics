@@ -1,9 +1,12 @@
 from django.db import models
 
+
+
+
 class Treinamento(models.Model):
     area = models.CharField("Área",max_length=100, null=False, blank=False)
     treinamento = models.CharField("Treinamento",max_length=100, null=False, blank=False)
-    participante = models.CharField("Participante", max_length=100, null=False, blank=False)
+    funcionario = models.CharField("Funcionário", max_length=100, null=False, blank=False)
     carga_horaria = models.IntegerField("Carga Horária", null=False, blank=False)
     programado = models.BooleanField("Programado", default=False)
     realizado = models.BooleanField("Realizado", default=False)
@@ -21,4 +24,4 @@ class Treinamento(models.Model):
         db_table = "treinamento_rh"
 
     def __str__(self):
-        return f"{self.area} - {self.treinamento} ({self.participante} participantes)"
+        return f"{self.area} - {self.treinamento} ({self.funcionario})"
