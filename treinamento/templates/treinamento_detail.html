@@ -104,7 +104,8 @@
   <div class="card">
     <h2>{{ treinamento.treinamento }}</h2>
     <p><strong>Área:</strong> {{ treinamento.area }}</p>
-    <p><strong>Participantes:</strong> {{ treinamento.participante }}</p>
+    <p><strong>Funcionário:</strong> {{ treinamento.funcionario }}</p>
+    <p><strong>Empresa:</strong> {{ treinamento.empresa }}</p>
     <p><strong>Carga Horária:</strong> {{ treinamento.carga_horaria }}h</p>
     <p><strong>Data de Início:</strong> {% if treinamento.data_inicio %}{{ treinamento.data_inicio|date:"d/m/Y" }}{% else %}—{% endif %}</p>
     <p><strong>Data de Fim Planejada:</strong> {% if treinamento.data_fim_planejada %}{{ treinamento.data_fim_planejada|date:"d/m/Y" }}{% else %}—{% endif %}</p>

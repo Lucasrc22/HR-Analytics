@@ -5,8 +5,29 @@ from django.utils.html import format_html, format_html_join
 
 from .models import Treinamento
 
-# Configurações de banco de dados (app/settings.py)
-SQL_FUNCIONARIOS_ATIVOS = config("SQL_FUNCIONARIOS_ATIVOS")
+# Query dos funcionários/PJ ATIVOS. Vem do .env (SQL_FUNCIONARIOS_ATIVOS), mas com
+# um fallback embutido: se a variável não estiver no ambiente (ex.: container sem a
+# chave no .env), usamos o SQL abaixo em vez de quebrar o import do app.
+# A view PBI_FUNCIONARIOS_RH é de turnover (só demitidos no lado CLT), por isso
+# consultamos as tabelas-base: hcm.funcionario (sem desligamento) + pbi.pj_rh_prestador.
+_SQL_FUNCIONARIOS_ATIVOS_FALLBACK = (
+    "SELECT nome FROM ("
+    "SELECT DISTINCT CAST(UPPER(func.nom_pessoa_fisic) AS VARCHAR2(200)) AS nome "
+    "FROM hcm.funcionario func "
+    "WHERE func.dat_desligto_func IS NULL "
+    "AND func.idi_tip_func NOT IN (7, 2) "
+    "AND func.nom_pessoa_fisic IS NOT NULL "
+    "UNION "
+    "SELECT DISTINCT CAST(UPPER(pj.nome_funcionario) AS VARCHAR2(200)) AS nome "
+    "FROM pbi.pj_rh_prestador pj "
+    "WHERE pj.data_demissao IS NULL "
+    "AND pj.nome_funcionario IS NOT NULL"
+    ") ORDER BY nome"
+)
+
+SQL_FUNCIONARIOS_ATIVOS = config(
+    "SQL_FUNCIONARIOS_ATIVOS", default=_SQL_FUNCIONARIOS_ATIVOS_FALLBACK
+)
 
 
 def listar_funcionarios():

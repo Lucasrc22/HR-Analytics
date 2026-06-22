@@ -90,6 +90,7 @@ EXPORT_COLUNAS = {
     "area": "Área",
     "treinamento": "Treinamento",
     "funcionario": "Funcionário",
+    "empresa": "Empresa",
     "carga_horaria": "Carga Horária",
     "programado": "Programado",
     "realizado": "Realizado",

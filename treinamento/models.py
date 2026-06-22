@@ -1,12 +1,20 @@
 from django.db import models
 
 
-
+EMPRESA = [
+        ('AGRO INDUSTRIAL TABU S/A', 'AGRO INDUSTRIAL TABU S/A'),
+        ('INSOLITO HOTEL LTDA', 'INSOLITO HOTEL LTDA'),
+        ('GALACTUS DO BRASIL', 'GALACTUS DO BRASIL'),
+        ('TRANCOSO BIO RISORT AGROPECUARIA LTDA', 'TRANCOSO BIO RISORT AGROPECUARIA LTDA'),
+        ('MEG DISTRIBUIDORA DE COMBUSTIVEIS LTDA', 'MEG DISTRIBUIDORA DE COMBUSTIVEIS LTDA'),
+        ('JUBARTE CONCEITO','JUBARTE CONCEITO')
+    ]
 
 class Treinamento(models.Model):
     area = models.CharField("Área",max_length=100, null=False, blank=False)
     treinamento = models.CharField("Treinamento",max_length=100, null=False, blank=False)
     funcionario = models.CharField("Funcionário", max_length=100, null=False, blank=False)
+    empresa = models.CharField("Empresa", max_length=100, null=False, blank=False, choices=EMPRESA)
     carga_horaria = models.IntegerField("Carga Horária", null=False, blank=False)
     programado = models.BooleanField("Programado", default=False)
     realizado = models.BooleanField("Realizado", default=False)

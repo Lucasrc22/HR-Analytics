@@ -193,6 +193,7 @@
           <th>Área</th>
           <th>Treinamento</th>
           <th>Participantes</th>
+          <th>Empresa</th>
           <th>Carga Horária</th>
           <th>Início</th>
           <th>Data Planejada</th>
@@ -208,6 +209,7 @@
             <td>{{ t.area }}</td>
             <td>{{ t.treinamento }}</td>
             <td>{{ t.funcionario }}</td>
+            <td>{{ t.empresa }}</td>
             <td>{{ t.carga_horaria }}h</td>
             <td>{% if t.data_inicio %}{{ t.data_inicio|date:"d/m/Y" }}{% else %}—{% endif %}</td>
             <td>{% if t.data_fim_planejada %}{{ t.data_fim_planejada|date:"d/m/Y" }}{% else %}—{% endif %}</td>
@@ -236,7 +238,7 @@
           </tr>
         {% empty %}
           <tr>
-            <td colspan="10" class="empty">Nenhum treinamento registrado.</td>
+            <td colspan="11" class="empty">Nenhum treinamento registrado.</td>
           </tr>
         {% endfor %}
       </tbody>
