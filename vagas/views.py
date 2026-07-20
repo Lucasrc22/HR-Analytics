@@ -72,6 +72,7 @@ EXPORT_COLUNAS = {
     "cargo": "Cargo",
     "status": "Status",
     "motivo": "Motivo",
+    "aproveitamento": "Aproveitamento Interno",
     "justificativa": "Justificativa",
     "nome_candidato": "Nome do Candidato",
     "previsao_admissao": "Previsão de Admissão",

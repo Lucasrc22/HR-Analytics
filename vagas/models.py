@@ -22,7 +22,10 @@ class Vagas(models.Model):
         ('AUMENTO DE QUADRO','AUMENTO DE QUADRO'),
         ('SUBSTITUIÇÃO','SUBSTITUIÇÃO'),
     ]
-
+    APROVEITAMENTO_INTERNO = [
+        ('Sim', 'Sim'),
+        ('Não', 'Não')
+    ]
 
     empresa = models.CharField("Empresa",max_length=100, null=False, blank=False, choices=EMPRESA)
     sigiloso = models.BooleanField("Sigiloso", default=False)
@@ -35,6 +38,7 @@ class Vagas(models.Model):
     cargo = models.CharField("Cargo",max_length=100, null=False, blank=False)
     status = models.CharField("Status",max_length=100, null=False, blank=False, choices=STATUS_CHOICES)
     motivo = models.CharField("Motivo", max_length=200, null=True, blank=True, choices=MOTIVO)
+    aproveitamento = models.CharField("Aproveitamento Interno", max_length=100, null=True, blank=True, choices=APROVEITAMENTO_INTERNO)
     justificativa = models.TextField("Justificativa", null=True, blank=True)
     nome_candidato = models.CharField("Nome do Candidato", max_length=100, null=True, blank=True)
     previsao_admissao = models.DateField("Previsão de Admissão", null=True, blank=True)

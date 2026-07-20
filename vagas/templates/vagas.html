@@ -170,6 +170,7 @@
           <th>Data de Abertura</th>
           <th>Data de Fechamento</th>
           <th>Status</th>
+          <th>Aproveitamento</th>
           <th>Ações</th>
         </tr>
       </thead>
@@ -190,6 +191,7 @@
                 <span class="badge badge-fechada">Fechada</span>
               {% endif %}
             </td>
+            <td>{{ vaga.aproveitamento|default:"—" }}</td>
             <td class="actions">
               <a href="{% url 'vagas_detail' vaga.pk %}">Ver</a>
               <a href="{% url 'vagas_update' vaga.pk %}">Editar</a>
@@ -198,7 +200,7 @@
           </tr>
         {% empty %}
           <tr>
-            <td colspan="9" class="empty">Nenhuma vaga registrada.</td>
+            <td colspan="10" class="empty">Nenhuma vaga registrada.</td>
           </tr>
         {% endfor %}
       </tbody>

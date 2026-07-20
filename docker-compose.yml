@@ -38,10 +38,8 @@ services:
       web:
         condition: service_healthy
     ports:
-      # 8004 escolhida por estar LIVRE no servidor.
-      # Em uso: 8000,8001,8002,8003,8006,8080,8502,8503,9443,5432,6379.
+     
       - "8004:80"
-      # - "443:443"   # 443 está livre; habilite ao configurar TLS
     volumes:
       - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
       - static_volume:/app/static:ro
@@ -52,7 +50,6 @@ services:
       - no-new-privileges:true
 
 networks:
-  # Bridge (não-interna) para que o "web" alcance o Oracle na sua LAN.
   appnet:
     driver: bridge
 
