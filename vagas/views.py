@@ -13,6 +13,22 @@ from .models import Vagas
 from .forms import VagasForm
 
 
+MESES = {
+    "janeiro": 1,
+    "fevereiro": 2,
+    "março": 3,
+    "abril": 4,
+    "maio": 5,
+    "junho": 6,
+    "julho": 7,
+    "agosto": 8,
+    "setembro": 9,
+    "outubro": 10,
+    "novembro": 11,
+    "dezembro": 12,
+}
+
+
 class VagasListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = Vagas
     template_name = "vagas.html"
@@ -24,7 +40,16 @@ class VagasListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
         search = self.request.GET.get("search")
         if search:
             queryset = queryset.filter(cargo__icontains=search)
+
+        mes = self.request.GET.get("mes", "").strip().lower()
+        if mes in MESES:
+            queryset = queryset.filter(data_abertura__month=MESES[mes])
         return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["meses"] = list(MESES.keys())
+        return context
 
 
 class VagasDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
@@ -59,7 +84,6 @@ class VagasDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     permission_required = "vagas.delete_vagas"
 
 
-# Colunas exportadas: campo do model -> cabeçalho amigável no Excel.
 EXPORT_COLUNAS = {
     "empresa": "Empresa",
     "sigiloso": "Sigiloso",
@@ -81,7 +105,6 @@ EXPORT_COLUNAS = {
 
 
 def buscar_dados_vagas():
-    """Gera um .xlsx com toda a base de vagas no MEDIA_ROOT e devolve o nome do arquivo."""
     queryset = Vagas.objects.all().order_by("empresa", "cargo")
     df = pd.DataFrame(list(queryset.values(*EXPORT_COLUNAS.keys())))
     df = df.reindex(columns=list(EXPORT_COLUNAS.keys()))

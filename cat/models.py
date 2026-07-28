@@ -13,7 +13,6 @@ class CAT(models.Model):
     ]
     
     nom_empresa = models.CharField("Nome da empresa", max_length=40, default="", choices=EMPRESA)
-    matricula = models.IntegerField("Matrícula", default=0)
     nom_funcionario = models.CharField("Nome do funcionário", max_length=60, default="")
     setor = models.CharField("Setor", max_length=60, default="")
     acidente = models.CharField("Acidente", max_length=100, default="")

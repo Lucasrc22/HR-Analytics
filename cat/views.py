@@ -62,7 +62,6 @@ class CATDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
 # Colunas exportadas: campo do model -> cabeçalho amigável no Excel.
 EXPORT_COLUNAS = {
     "nom_empresa": "Nome da empresa",
-    "matricula": "Matrícula",
     "nom_funcionario": "Nome do funcionário",
     "setor": "Setor",
     "acidente": "Acidente",

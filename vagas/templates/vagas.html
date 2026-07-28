@@ -5,7 +5,7 @@
 {% block content %}
   <style>
     .container {
-      max-width: 1100px;
+      max-width: 1400px;
       margin: 40px auto;
       padding: 20px;
     }
@@ -71,7 +71,7 @@
 
     .table thead th {
       padding: 15px;
-      text-align: left;
+      text-align: center;
       font-weight: 600;
     }
 
@@ -85,6 +85,8 @@
 
     .table tbody td {
       padding: 15px;
+      text-align: center;
+      vertical-align: middle;
     }
 
     .table .row-accent {
@@ -126,15 +128,29 @@
       color: #888;
     }
 
-    .search-form {
+    .search-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
       margin-bottom: 20px;
     }
 
-    .search-form input[type="text"] {
+    .search-form {
+      display: flex;
+      gap: 8px;
+    }
+
+    .search-form input[type="text"],
+    .search-form select {
       padding: 10px;
       border: 1px solid #CED7D7;
       border-radius: 4px;
       width: 250px;
+    }
+
+    .search-form select[name="mes"] {
+      width: 300px;
     }
 
     .search-form button {
@@ -154,10 +170,22 @@
     <a href="{% url 'new_vagas' %}" class="btn-create">+ Nova Vaga</a>
     <a href="{% url 'vagas_export' %}" class="btn-export">⭳ Exportar</a>
 
-    <form method="get" class="search-form">
-      <input type="text" name="search" placeholder="Buscar por cargo..." value="{{ request.GET.search|default:'' }}">
-      <button type="submit">Buscar</button>
-    </form>
+    <div class="search-bar">
+      <form method="get" class="search-form">
+        <input type="text" name="search" placeholder="Buscar por cargo..." value="{{ request.GET.search|default:'' }}">
+        <button type="submit">Buscar</button>
+      </form>
+
+      <form method="get" class="search-form">
+        <select name="mes">
+          <option value="">Filtrar por mês de abertura...</option>
+          {% for mes in meses %}
+            <option value="{{ mes }}" {% if request.GET.mes == mes %}selected{% endif %}>{{ mes|capfirst }}</option>
+          {% endfor %}
+        </select>
+        <button type="submit">Filtrar</button>
+      </form>
+    </div>
 
     <table class="table">
       <thead>
@@ -167,6 +195,7 @@
           <th>Área</th>
           <th>Tipo de Vaga</th>
           <th>Qtd.</th>
+          <th>Justificativa</th>
           <th>Data de Abertura</th>
           <th>Data de Fechamento</th>
           <th>Status</th>
@@ -182,6 +211,7 @@
             <td>{{ vaga.area }}</td>
             <td>{{ vaga.tipo_vaga }}</td>
             <td>{{ vaga.quantidade }}</td>
+            <td>{{ vaga.justificativa }}</td>
             <td>{{ vaga.data_abertura|date:"d/m/Y" }}</td>
             <td>{{ vaga.data_fechamento|date:"d/m/Y" }}</td>
             <td>
@@ -200,7 +230,7 @@
           </tr>
         {% empty %}
           <tr>
-            <td colspan="10" class="empty">Nenhuma vaga registrada.</td>
+            <td colspan="11" class="empty">Nenhuma vaga registrada.</td>
           </tr>
         {% endfor %}
       </tbody>
