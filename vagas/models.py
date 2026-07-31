@@ -27,9 +27,14 @@ class Vagas(models.Model):
         ('Não', 'Não')
     ]
 
+    TIPO_VAGA = [
+        ('Tático', 'Tático'),
+        ('Operacional', 'Operacional'),
+    ]
+
     empresa = models.CharField("Empresa",max_length=100, null=False, blank=False, choices=EMPRESA)
     sigiloso = models.BooleanField("Sigiloso", default=False)
-    tipo_vaga = models.CharField("Tipo de Vaga",max_length=100, null=False, blank=False)
+    tipo_vaga = models.CharField("Tipo de Vaga",max_length=100, null=False, blank=False, choices = TIPO_VAGA)
     consultoria = models.BooleanField("Consultoria", default=False)
     area = models.CharField("Área",max_length=100, null=False, blank=False)
     quantidade = models.PositiveIntegerField("Quantidade", null=False, blank=False)

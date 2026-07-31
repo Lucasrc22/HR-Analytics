@@ -65,12 +65,16 @@ class VagasForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
+            # Na edição da vaga o candidato já está registrado em "nome_candidato"
+            # e ainda não é funcionário, então o campo nem é montado.
+            if self.instance.pk:
+                return
             nomes = listar_funcionarios()
             self.fields["nom_funcionario"] = forms.CharField(
                 label="Funcionário",
                 max_length=100,
                 widget=DataListInput(
-                    data_list=nomes, 
+                    data_list=nomes,
                     list_id="funcionarios-list",
                     attrs = {"placeholder": "Digite o nome do funcionário"},
                 ),

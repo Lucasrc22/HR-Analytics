@@ -138,6 +138,9 @@
 
     .search-form {
       display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
       gap: 8px;
     }
 
@@ -161,6 +164,20 @@
       border-radius: 4px;
       cursor: pointer;
     }
+
+    .btn-clear {
+      padding: 9px 16px;
+      border: 1px solid #CED7D7;
+      background-color: #FFFFFF;
+      color: #285959;
+      border-radius: 4px;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .btn-clear:hover {
+      background-color: #A4C0B0;
+    }
   </style>
 
   <div class="container" align="center">
@@ -173,17 +190,15 @@
     <div class="search-bar">
       <form method="get" class="search-form">
         <input type="text" name="search" placeholder="Buscar por cargo..." value="{{ request.GET.search|default:'' }}">
-        <button type="submit">Buscar</button>
-      </form>
-
-      <form method="get" class="search-form">
+        <input type="text" name="justificativa" placeholder="Buscar por justificativa..." value="{{ request.GET.justificativa|default:'' }}">
         <select name="mes">
           <option value="">Filtrar por mês de abertura...</option>
           {% for mes in meses %}
             <option value="{{ mes }}" {% if request.GET.mes == mes %}selected{% endif %}>{{ mes|capfirst }}</option>
           {% endfor %}
         </select>
-        <button type="submit">Filtrar</button>
+        <button type="submit">Buscar</button>
+        <a href="{% url 'vagas_list' %}" class="btn-clear">Limpar</a>
       </form>
     </div>
 

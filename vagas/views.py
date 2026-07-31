@@ -41,6 +41,10 @@ class VagasListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
         if search:
             queryset = queryset.filter(cargo__icontains=search)
 
+        justificativa = self.request.GET.get("justificativa", "").strip()
+        if justificativa:
+            queryset = queryset.filter(justificativa__icontains=justificativa)
+
         mes = self.request.GET.get("mes", "").strip().lower()
         if mes in MESES:
             queryset = queryset.filter(data_abertura__month=MESES[mes])

@@ -9,7 +9,6 @@ services:
       - .env
     environment:
       DJANGO_SETTINGS_MODULE: app.settings
-    # Sem "ports": a app NÃO é exposta ao host, só o nginx fala com ela.
     expose:
       - "8000"
     volumes:

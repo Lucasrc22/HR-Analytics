@@ -27,9 +27,6 @@ COPY requirements.txt .
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
 
-##########################################################################
-# Stage 2 — runtime: imagem enxuta, sem toolchain, rodando como não-root
-##########################################################################
 FROM python:3.13-slim AS runtime
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
