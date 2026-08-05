@@ -22,6 +22,7 @@ from cat.views import (
     exportar_cat,
     cat_get_file,
     cat_download,
+    funcionario_info as cat_funcionario_info,
 )
 from treinamento.views import (
     TreinamentoListView,
@@ -32,6 +33,7 @@ from treinamento.views import (
     exportar_treinamento,
     treinamento_get_file,
     treinamento_download,
+    funcionario_info as treinamento_funcionario_info,
 )
 from vagas.views import (
     VagasListView,
@@ -54,6 +56,7 @@ urlpatterns = [
     path('cat/<int:pk>/edit/', CATUpdateView.as_view(), name='cat_update'),
     path('cat/<int:pk>/delete/', CATDeleteView.as_view(), name='cat_delete'),
     path('cat/export/', exportar_cat, name='cat_export'),
+    path('cat/funcionario-info/', cat_funcionario_info, name='cat_funcionario_info'),
     path('cat/get_file/<str:file_path>/', cat_get_file, name='cat_get_file'),
     path('cat/download/<str:file_path>/', cat_download, name='cat_download'),
     path('pj/', PJListView.as_view(), name='pj_list'),
@@ -70,6 +73,7 @@ urlpatterns = [
     path('treinamento/<int:pk>/edit/', TreinamentoUpdateView.as_view(), name='treinamento_update'),
     path('treinamento/<int:pk>/delete/', TreinamentoDeleteView.as_view(), name='treinamento_delete'),
     path('treinamento/export/', exportar_treinamento, name='treinamento_export'),
+    path('treinamento/funcionario-info/', treinamento_funcionario_info, name='treinamento_funcionario_info'),
     path('treinamento/get_file/<str:file_path>/', treinamento_get_file, name='treinamento_get_file'),
     path('treinamento/download/<str:file_path>/', treinamento_download, name='treinamento_download'),
     path('vagas/', VagasListView.as_view(), name='vagas_list'),

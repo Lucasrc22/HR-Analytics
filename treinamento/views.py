@@ -3,17 +3,16 @@ import os
 import pandas as pd
 from django.conf import settings
 from django.contrib.auth.decorators import login_required, permission_required
-from django.http import Http404, HttpResponse, HttpResponseRedirect
+from django.http import Http404, HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from .models import Treinamento
-from .forms import TreinamentoForm
+from .forms import TreinamentoForm, buscar_empresa_setor
 
 
-# Nome do mês (pt-BR, minúsculo) -> número, para filtrar por nome em vez de número.
 MESES = {
     "janeiro": 1,
     "fevereiro": 2,
@@ -85,7 +84,19 @@ class TreinamentoDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteV
     permission_required = "treinamento.delete_treinamento"
 
 
-# Colunas exportadas: campo do model -> cabeçalho amigável no Excel.
+@login_required
+@permission_required("treinamento.view_treinamento", raise_exception=True)
+def funcionario_info(request):
+    dados = buscar_empresa_setor(request.GET.get("nome", ""))
+    return JsonResponse(
+        {
+            "encontrado": bool(dados),
+            "empresa": dados.get("empresa", ""),
+            "setor": dados.get("setor", ""),
+        }
+    )
+
+
 EXPORT_COLUNAS = {
     "area": "Área",
     "treinamento": "Treinamento",
@@ -106,15 +117,12 @@ EXPORT_COLUNAS = {
 
 
 def buscar_dados_treinamento():
-    """Gera um .xlsx com toda a base de treinamentos no MEDIA_ROOT e devolve o nome do arquivo."""
     queryset = Treinamento.objects.all().order_by("area", "treinamento")
     df = pd.DataFrame(list(queryset.values(*EXPORT_COLUNAS.keys())))
 
-    # Garante todas as colunas mesmo com a base vazia, e aplica os cabeçalhos.
     df = df.reindex(columns=list(EXPORT_COLUNAS.keys()))
     df = df.rename(columns=EXPORT_COLUNAS)
 
-    # Timestamp evita sobrescrita entre exports e cache no navegador.
     file_name = f"treinamentos_{timezone.localtime().strftime('%Y%m%d_%H%M%S')}.xlsx"
     os.makedirs(settings.MEDIA_ROOT, exist_ok=True)
     df.to_excel(os.path.join(settings.MEDIA_ROOT, file_name), index=False)
@@ -137,7 +145,6 @@ def treinamento_get_file(request, file_path):
 @login_required
 @permission_required("treinamento.view_treinamento", raise_exception=True)
 def treinamento_download(request, file_path):
-    # basename evita path traversal: só arquivos dentro do MEDIA_ROOT.
     full_path = os.path.join(settings.MEDIA_ROOT, os.path.basename(file_path))
     if os.path.exists(full_path):
         with open(full_path, "rb") as fh:

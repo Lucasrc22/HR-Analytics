@@ -67,4 +67,6 @@
       <button type="submit">Salvar</button>
     </form>
   </div>
+
+  {% include "_funcionario_autofill.html" with url_name="treinamento_funcionario_info" campo_funcionario="id_funcionario" campo_setor="id_area" campo_empresa="id_empresa" %}
 {% endblock %}

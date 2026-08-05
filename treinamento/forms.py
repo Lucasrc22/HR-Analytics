@@ -5,11 +5,7 @@ from django.utils.html import format_html, format_html_join
 
 from .models import Treinamento
 
-# Query dos funcionários/PJ ATIVOS. Vem do .env (SQL_FUNCIONARIOS_ATIVOS), mas com
-# um fallback embutido: se a variável não estiver no ambiente (ex.: container sem a
-# chave no .env), usamos o SQL abaixo em vez de quebrar o import do app.
-# A view PBI_FUNCIONARIOS_RH é de turnover (só demitidos no lado CLT), por isso
-# consultamos as tabelas-base: hcm.funcionario (sem desligamento) + pbi.pj_rh_prestador.
+
 _SQL_FUNCIONARIOS_ATIVOS_FALLBACK = (
     "SELECT nome FROM ("
     "SELECT DISTINCT CAST(UPPER(func.nom_pessoa_fisic) AS VARCHAR2(200)) AS nome "
@@ -30,10 +26,57 @@ SQL_FUNCIONARIOS_ATIVOS = config(
 )
 
 
+_SQL_EMPRESA_DO_FUNCIONARIO_FALLBACK = (
+    "SELECT TRIM(REPLACE(v.nome_empresa, CHR(160), ' ')) AS nome_empresa "
+    "FROM pbi.pbi_funcionarios_rh v "
+    "WHERE v.data_demissao IS NULL "
+    "AND UPPER(TRIM(REPLACE(v.nome_funcionario, CHR(160), ' '))) = "
+    "UPPER(TRIM(REPLACE(%s, CHR(160), ' '))) "
+    "ORDER BY v.data_admissao DESC NULLS LAST "
+    "FETCH FIRST 1 ROW ONLY"
+)
+
+_SQL_SETOR_DO_FUNCIONARIO_FALLBACK = (
+    "SELECT TRIM(REPLACE(v.setor, CHR(160), ' ')) AS setor "
+    "FROM pbi.pbi_funcionarios_rh v "
+    "WHERE v.data_demissao IS NULL "
+    "AND UPPER(TRIM(REPLACE(v.nome_funcionario, CHR(160), ' '))) = "
+    "UPPER(TRIM(REPLACE(%s, CHR(160), ' '))) "
+    "ORDER BY v.data_admissao DESC NULLS LAST "
+    "FETCH FIRST 1 ROW ONLY"
+)
+
+SQL_EMPRESA_DO_FUNCIONARIO = config(
+    "SQL_EMPRESA_DO_FUNCIONARIO", default=_SQL_EMPRESA_DO_FUNCIONARIO_FALLBACK
+)
+SQL_SETOR_DO_FUNCIONARIO = config(
+    "SQL_SETOR_DO_FUNCIONARIO", default=_SQL_SETOR_DO_FUNCIONARIO_FALLBACK
+)
+
+
 def listar_funcionarios():
     with connection.cursor() as cursor:
         cursor.execute(SQL_FUNCIONARIOS_ATIVOS)
         return [row[0] for row in cursor.fetchall()]
+
+
+def buscar_empresa_setor(nome):
+    nome = (nome or "").strip()
+    if not nome:
+        return {}
+
+    with connection.cursor() as cursor:
+        cursor.execute(SQL_EMPRESA_DO_FUNCIONARIO, [nome])
+        row = cursor.fetchone()
+        empresa = row[0] if row else ""
+
+        cursor.execute(SQL_SETOR_DO_FUNCIONARIO, [nome])
+        row = cursor.fetchone()
+        setor = row[0] if row else ""
+
+    if not empresa and not setor:
+        return {}
+    return {"empresa": empresa or "", "setor": setor or ""}
 
 
 class DataListInput(forms.TextInput):

@@ -23,10 +23,57 @@ SQL_FUNCIONARIOS_ATIVOS = config(
     "SQL_FUNCIONARIOS_ATIVOS", default=_SQL_FUNCIONARIOS_ATIVOS_FALLBACK
 )
 
+
+_SQL_EMPRESA_DO_FUNCIONARIO_FALLBACK = (
+    "SELECT TRIM(REPLACE(v.nome_empresa, CHR(160), ' ')) AS nome_empresa "
+    "FROM pbi.pbi_funcionarios_rh v "
+    "WHERE v.data_demissao IS NULL "
+    "AND UPPER(TRIM(REPLACE(v.nome_funcionario, CHR(160), ' '))) = "
+    "UPPER(TRIM(REPLACE(%s, CHR(160), ' '))) "
+    "ORDER BY v.data_admissao DESC NULLS LAST "
+    "FETCH FIRST 1 ROW ONLY"
+)
+
+_SQL_SETOR_DO_FUNCIONARIO_FALLBACK = (
+    "SELECT TRIM(REPLACE(v.setor, CHR(160), ' ')) AS setor "
+    "FROM pbi.pbi_funcionarios_rh v "
+    "WHERE v.data_demissao IS NULL "
+    "AND UPPER(TRIM(REPLACE(v.nome_funcionario, CHR(160), ' '))) = "
+    "UPPER(TRIM(REPLACE(%s, CHR(160), ' '))) "
+    "ORDER BY v.data_admissao DESC NULLS LAST "
+    "FETCH FIRST 1 ROW ONLY"
+)
+
+SQL_EMPRESA_DO_FUNCIONARIO = config(
+    "SQL_EMPRESA_DO_FUNCIONARIO", default=_SQL_EMPRESA_DO_FUNCIONARIO_FALLBACK
+)
+SQL_SETOR_DO_FUNCIONARIO = config(
+    "SQL_SETOR_DO_FUNCIONARIO", default=_SQL_SETOR_DO_FUNCIONARIO_FALLBACK
+)
+
 def listar_funcionarios():
     with connection.cursor() as cursor:
         cursor.execute(SQL_FUNCIONARIOS_ATIVOS)
         return [row[0] for row in cursor.fetchall()]
+
+
+def buscar_empresa_setor(nome):
+    nome = (nome or "").strip()
+    if not nome:
+        return {}
+
+    with connection.cursor() as cursor:
+        cursor.execute(SQL_EMPRESA_DO_FUNCIONARIO, [nome])
+        row = cursor.fetchone()
+        empresa = row[0] if row else ""
+
+        cursor.execute(SQL_SETOR_DO_FUNCIONARIO, [nome])
+        row = cursor.fetchone()
+        setor = row[0] if row else ""
+
+    if not empresa and not setor:
+        return {}
+    return {"empresa": empresa or "", "setor": setor or ""}
 
 
 class DataListInput(forms.TextInput):

@@ -1,0 +1,76 @@
+{% comment %}
+Preenche setor e empresa a partir do funcionário escolhido no campo com datalist.
+Os campos continuam editáveis: o autofill é uma sugestão, não uma trava.
+
+Uso (todos os parâmetros são obrigatórios):
+  {% include "_funcionario_autofill.html" with url_name="cat_funcionario_info" campo_funcionario="id_nom_funcionario" campo_setor="id_setor" campo_empresa="id_nom_empresa" %}
+
+  url_name          nome da rota que devolve {encontrado, empresa, setor} em JSON
+  campo_funcionario id do input de nome (o que tem o datalist)
+  campo_setor       id do campo que recebe o SETOR
+  campo_empresa     id do <select> que recebe o NOME_EMPRESA
+{% endcomment %}
+<script>
+  (function () {
+    const URL_INFO = "{% url url_name %}";
+    const funcionario = document.getElementById("{{ campo_funcionario }}");
+    const setor = document.getElementById("{{ campo_setor }}");
+    const empresa = document.getElementById("{{ campo_empresa }}");
+    if (!funcionario || !setor || !empresa) return;
+
+    // Nomes do datalist: só consultamos o banco quando o texto digitado é
+    // exatamente um deles, em vez de uma ida ao servidor por tecla.
+    const lista = document.getElementById(funcionario.getAttribute("list"));
+    const nomes = new Set(
+      Array.from(lista ? lista.options : []).map(function (o) {
+        return o.value.trim().toUpperCase();
+      })
+    );
+
+    // Aviso para o caso de a empresa vinda do banco não existir no select.
+    const aviso = document.createElement("small");
+    aviso.style.cssText = "display:block;margin:-10px 0 15px;color:#a33;";
+    empresa.insertAdjacentElement("afterend", aviso);
+
+    function selecionarEmpresa(valor) {
+      const alvo = valor.trim().toUpperCase();
+      const opcao = Array.from(empresa.options).find(function (o) {
+        return o.value.trim().toUpperCase() === alvo;
+      });
+      if (opcao) {
+        empresa.value = opcao.value;
+        aviso.textContent = "";
+      } else {
+        aviso.textContent = 'Empresa "' + valor + '" não está na lista — selecione manualmente.';
+      }
+    }
+
+    let ultimoNome = "";
+
+    function preencher() {
+      const nome = funcionario.value.trim();
+      if (!nome || nome === ultimoNome) return;
+      if (nomes.size && !nomes.has(nome.toUpperCase())) return;
+      ultimoNome = nome;
+
+      fetch(URL_INFO + "?nome=" + encodeURIComponent(nome), {
+        headers: { "X-Requested-With": "XMLHttpRequest" },
+      })
+        .then(function (resp) {
+          return resp.ok ? resp.json() : null;
+        })
+        .then(function (dados) {
+          if (!dados || !dados.encontrado) return;
+          if (dados.setor) setor.value = dados.setor;
+          if (dados.empresa) selecionarEmpresa(dados.empresa);
+        })
+        .catch(function () {
+          // Sem resposta do servidor: o usuário preenche os dois campos na mão.
+        });
+    }
+
+    // "input" cobre o clique numa sugestão do datalist; "change", o sair do campo.
+    funcionario.addEventListener("input", preencher);
+    funcionario.addEventListener("change", preencher);
+  })();
+</script>
