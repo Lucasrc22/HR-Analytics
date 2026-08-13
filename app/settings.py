@@ -83,8 +83,6 @@ WSGI_APPLICATION = 'app.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.oracle',
-        # Usando SERVICE_NAME (não SID): monta o DSN no formato host:port/service_name.
-        # Por isso o NAME recebe o DSN completo e HOST/PORT ficam vazios.
         'NAME': '{host}:{port}/{service}'.format(
             host=config('ORACLE_HOST'),                
            port=config('ORACLE_PORT', default='1521'),
